@@ -1,0 +1,13 @@
+{
+  "_id": "comwknife0000001",
+  "name": "Combat Knife",
+  "type": "weapon",
+  "img": "icons/weapons/daggers/dagger-black.webp",
+  "system": {
+    "damage": "1d6",
+    "range": 1,
+    "equipped": false,
+    "description": "Standard-issue melee blade. Quiet, dependable, and always loaded. Only useful when the enemy is close enough to touch."
+  },
+  "flags": {}
+}

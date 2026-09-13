@@ -1,0 +1,30 @@
+<div class="com-to com-phase-{{phase}}" style="--com-to-scale: {{scale}}">
+  {{#if active}}
+  {{#unless hidden}}
+  <div class="com-to-round" title="{{localize "COM.TurnOrder.DragHint"}}">
+    <span class="com-to-round-label">{{localize "COM.TurnOrder.Round"}}</span>
+    <span class="com-to-round-num">{{round}}</span>
+    <span class="com-to-phase">{{phaseLabel}}</span>
+  </div>
+  <ul class="com-to-tiles">
+    {{#each units}}
+    <li class="com-to-tile com-side-{{this.side}}{{#if this.isActive}} com-active{{/if}}{{#if this.hasActed}} com-acted{{/if}}{{#if this.defeated}} com-defeated{{/if}}"
+        data-token-id="{{this.tokenId}}" data-action="focusUnit"
+        title="{{this.name}} — {{this.hp}}/{{this.hpMax}} HP · {{#each this.pips}}{{#if this.filled}}●{{else}}○{{/if}}{{/each}}">
+      <img src="{{this.img}}" alt="{{this.name}}">
+      {{#if this.overwatch}}<i class="com-to-ow" title="On Overwatch"></i>{{/if}}
+      <span class="com-to-hp"><i style="width: {{this.hpPct}}%"></i></span>
+      <span class="com-to-pips">{{#each this.pips}}<i class="com-pip {{#if this.filled}}com-filled{{/if}}"></i>{{/each}}</span>
+    </li>
+    {{/each}}
+  </ul>
+  <div class="com-to-controls">
+    <button type="button" data-action="scaleUp" title="{{localize "COM.TurnOrder.Bigger"}}">+</button>
+    <button type="button" data-action="scaleDown" title="{{localize "COM.TurnOrder.Smaller"}}">−</button>
+    <button type="button" data-action="hidePanel" title="{{localize "COM.TurnOrder.Hide"}}">✕</button>
+  </div>
+  {{else}}
+  <button type="button" class="com-to-pill" data-action="restorePanel" title="{{localize "COM.TurnOrder.Show"}}">◧</button>
+  {{/unless}}
+  {{/if}}
+</div>

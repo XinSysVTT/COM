@@ -1,0 +1,13 @@
+{
+  "_id": "comwarifle0000001",
+  "name": "Assault Rifle",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-green.webp",
+  "system": {
+    "damage": "1d6+2",
+    "range": 12,
+    "equipped": false,
+    "description": "The workhorse. Reliable at mid range, easy to maintain, and standard issue across every crisis response team."
+  },
+  "flags": {}
+}

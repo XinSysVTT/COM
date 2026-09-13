@@ -1,0 +1,13 @@
+{
+  "_id": "comwsmg000000001",
+  "name": "SMG",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-submachine-drum-magazine.webp",
+  "system": {
+    "damage": "1d6+2",
+    "range": 6,
+    "equipped": false,
+    "description": "Submachine gun with a drum magazine. shreds anything at close quarters, but the short barrel loses steam fast."
+  },
+  "flags": {}
+}

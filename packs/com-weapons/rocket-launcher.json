@@ -1,0 +1,13 @@
+{
+  "_id": "comwrocket0000001",
+  "name": "Rocket Launcher",
+  "type": "weapon",
+  "img": "icons/weapons/guns/launcher-rocket-bazooka.webp",
+  "system": {
+    "damage": "4d6",
+    "range": 15,
+    "equipped": false,
+    "description": "Shoulder-fired rocket, roughly one per crisis. Overkill is a state of mind."
+  },
+  "flags": {}
+}

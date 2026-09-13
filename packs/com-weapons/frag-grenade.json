@@ -1,0 +1,13 @@
+{
+  "_id": "comwgrenade000001",
+  "name": "Frag Grenade",
+  "type": "weapon",
+  "img": "icons/svg/explosion.svg",
+  "system": {
+    "damage": "3d6",
+    "range": 6,
+    "equipped": false,
+    "description": "Thrown fragmentation charge. Treat it as a short-range answer to problems that refuse to go away."
+  },
+  "flags": {}
+}

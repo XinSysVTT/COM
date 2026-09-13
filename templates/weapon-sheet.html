@@ -1,0 +1,26 @@
+<div class="com-sheet">
+  <header class="com-header">
+    <img class="com-portrait" src="{{document.img}}" alt="{{document.name}}" title="{{document.name}}">
+    <div class="com-header-fields">
+      <input type="text" name="name" value="{{document.name}}" placeholder="Name">
+    </div>
+  </header>
+
+  <div class="com-stats">
+    <label class="com-stat">
+      <span class="com-stat-label">{{localize "COM.Sheet.Damage"}}</span>
+      <input type="text" name="system.damage" value="{{system.damage}}">
+    </label>
+    <label class="com-stat" title="Grid cells">
+      <span class="com-stat-label">{{localize "COM.Sheet.Range"}}</span>
+      <input type="number" name="system.range" value="{{system.range}}" min="1" data-dtype="Number">
+    </label>
+    <label class="com-stat com-stat-check">
+      <span class="com-stat-label">{{localize "COM.Sheet.Equipped"}}</span>
+      <input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}}>
+    </label>
+  </div>
+
+  <h3 class="com-section-title">{{localize "COM.Sheet.Description"}}</h3>
+  <textarea class="com-description" name="system.description" rows="5">{{system.description}}</textarea>
+</div>

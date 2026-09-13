@@ -1,0 +1,1204 @@
+/* Squad Tactics — HUD, sheets and chat cards */
+
+/* Design tokens: the HUD family (command ring, status card, turn order,
+   forecast) shares this slate surface language — dark translucent panels,
+   thin cool-gray lines, off-white ink — while green/red stay semantic
+   (player side / enemy side). */
+:root {
+  --com-panel: rgba(13, 16, 21, 0.92);
+  --com-panel-soft: rgba(19, 24, 32, 0.88);
+  --com-panel-lift: rgba(40, 50, 66, 0.94);
+  --com-line: #454e5e;
+  --com-line-soft: rgba(203, 213, 229, 0.5);
+  --com-ink: #e6eaf2;
+  --com-ink-mid: #cfd6e2;
+  --com-ink-dim: #8d95a5;
+  --com-accent: #7fd94c;
+  --com-danger: #e06c5a;
+  --com-warn: #ffd77a;
+}
+
+/* -------------------------------------------- */
+/* Tactical HUD (status card, bottom center)    */
+/* -------------------------------------------- */
+
+#com-hud {
+  position: fixed;
+  /* V14 ApplicationV2 writes inline left/top even for non-positioned apps;
+     an inline top combined with our stylesheet bottom would stretch the
+     HUD across the whole screen, so both are forced back here. */
+  top: auto !important;
+  bottom: 64px !important;
+  left: 50% !important;
+  transform: translateX(-50%);
+  z-index: 90;
+  pointer-events: none;
+  color: var(--com-ink);
+  font-size: 13px;
+}
+
+#com-hud .com-hud {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+#com-hud .com-hud.com-empty {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Status card */
+#com-hud .com-hud-card,
+#com-hud .com-hud-actions,
+#com-hud .com-hud-hint,
+#com-hud .com-hud-mode {
+  background: var(--com-panel);
+  border: 1px solid var(--com-line);
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+
+#com-hud .com-hud-card {
+  display: flex;
+  gap: 11px;
+  padding: 8px 14px 8px 9px;
+  align-items: center;
+  border-left: 3px solid #5b6577;
+}
+
+#com-hud .com-hud-portrait {
+  width: 46px;
+  height: 46px;
+  border-radius: 3px;
+  border: 1px solid var(--com-line);
+  object-fit: cover;
+}
+
+#com-hud .com-hud-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 250px;
+}
+
+#com-hud .com-hud-name {
+  font-weight: 700;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--com-ink);
+}
+
+#com-hud .com-overwatch-tag {
+  background: var(--com-accent);
+  color: #10230a;
+  border-radius: 2px;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 4px;
+  vertical-align: 1px;
+  letter-spacing: 0.08em;
+}
+
+#com-hud .com-hud-bars {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  line-height: 1.2;
+}
+
+#com-hud .com-hud-label {
+  color: var(--com-ink-dim);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+#com-hud .com-hud-hpbar {
+  width: 104px;
+  height: 8px;
+  background: #171b23;
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  border-radius: 2px;
+  overflow: hidden;
+  display: inline-block;
+}
+
+#com-hud .com-hud-hpbar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #b8452f, #e06c5a);
+  transition: width 0.2s ease;
+}
+
+#com-hud .com-hud-hpnum {
+  font-size: 11px;
+  color: var(--com-ink-mid);
+  min-width: 34px;
+}
+
+#com-hud .com-hud-target {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--com-warn);
+  font-size: 11.5px;
+}
+
+#com-hud .com-hud-target i {
+  font-size: 10px;
+}
+
+#com-hud .com-pips {
+  display: inline-flex;
+  gap: 4px;
+}
+
+#com-hud .com-pip {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--com-accent);
+  display: inline-block;
+  background: transparent;
+}
+
+#com-hud .com-pip.com-filled {
+  background: var(--com-accent);
+  box-shadow: 0 0 5px rgba(127, 217, 76, 0.7);
+}
+
+/* Action chips — freeform (out-of-combat) play only; in combat the radial
+   command ring around the active unit is the action surface. */
+#com-hud .com-hud-actions {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+}
+
+#com-hud .com-hud-actions button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--com-ink);
+  border-radius: 3px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+#com-hud .com-hud-actions button .com-icon {
+  color: var(--com-ink-mid);
+  width: 13px;
+  height: 13px;
+  flex: none;
+}
+
+#com-hud .com-hud-actions button b {
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 2px;
+  border: 1px solid var(--com-line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--com-ink-dim);
+}
+
+#com-hud .com-hud-actions button:hover:not(:disabled) {
+  background: var(--com-panel-lift);
+  border-color: var(--com-line-soft);
+  color: #ffffff;
+}
+
+#com-hud .com-hud-actions button:hover:not(:disabled) .com-icon {
+  color: #ffffff;
+}
+
+#com-hud .com-hud-actions button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+#com-hud .com-hud-hint {
+  padding: 4px 12px;
+  color: var(--com-ink-dim);
+  font-size: 12px;
+}
+
+#com-hud .com-hud-mode {
+  padding: 4px 12px;
+  color: #c9eba8;
+  font-size: 12px;
+  border-color: rgba(127, 217, 76, 0.5);
+}
+
+/* -------------------------------------------- */
+/* Radial token actions (command ring)          */
+/* -------------------------------------------- */
+
+#com-token-actions {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 95;
+  pointer-events: none;
+  display: none;
+}
+
+#com-token-actions.com-visible {
+  display: block;
+}
+
+/* Control boxes are centered on their ring spot; plates only react on
+   their painted geometry, dead corners pass through to the canvas. */
+#com-token-actions .com-ra {
+  position: absolute;
+  left: 0;
+  top: 0;
+  translate: -50% -50%;
+  pointer-events: none;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+/* Appear ripple: only when the ring transitions hidden → visible. */
+#com-token-actions.com-animate .com-ra,
+#com-token-actions.com-animate .com-ra-pill {
+  animation: com-ra-in 0.16s ease backwards;
+}
+
+#com-token-actions.com-animate .com-ra:nth-child(2) { animation-delay: 0.04s; }
+#com-token-actions.com-animate .com-ra:nth-child(3) { animation-delay: 0.08s; }
+#com-token-actions.com-animate .com-ra:nth-child(4) { animation-delay: 0.12s; }
+#com-token-actions.com-animate .com-ra-pill { animation-delay: 0.16s; }
+
+@keyframes com-ra-in {
+  from {
+    opacity: 0;
+    scale: 0.8;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* --- Arc plates (Move, Attack) --- */
+
+#com-token-actions .com-ra-plate .com-ra-shape {
+  display: block;
+  overflow: visible;
+}
+
+/* pointer-events inherits "none" from the wrapper box — re-enable it on
+   the painted geometry so hover/clicks work while dead corners stay clear. */
+#com-token-actions .com-ra-plate .com-ra-shape path {
+  pointer-events: auto;
+  fill: var(--com-panel-soft);
+  stroke: var(--com-line-soft);
+  stroke-width: 1.5;
+  cursor: pointer;
+  transition: fill 0.12s ease, stroke 0.12s ease;
+}
+
+#com-token-actions .com-ra-plate:hover:not(:disabled) .com-ra-shape {
+  filter: drop-shadow(0 0 7px rgba(170, 200, 255, 0.35));
+}
+
+#com-token-actions .com-ra-plate:hover:not(:disabled) .com-ra-shape path,
+#com-token-actions .com-ra-plate:focus-visible .com-ra-shape path {
+  fill: var(--com-panel-lift);
+  stroke: #ffffff;
+}
+
+#com-token-actions .com-ra-plate:disabled .com-ra-shape path {
+  fill: rgba(19, 24, 32, 0.55);
+  stroke: rgba(203, 213, 229, 0.16);
+  cursor: not-allowed;
+}
+
+/* --- Shared bits: icons, key chips, mode glow --- */
+
+#com-token-actions .com-ra-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: calc(-50% + var(--com-ra-ix, 0px)) calc(-50% + var(--com-ra-iy, 0px));
+  color: var(--com-ink-mid);
+  width: 17px;
+  height: 17px;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+  transition: color 0.12s;
+}
+
+#com-token-actions .com-ra:hover:not(:disabled) .com-ra-icon {
+  color: #ffffff;
+}
+
+#com-token-actions .com-ra:disabled .com-ra-icon {
+  color: #5c6474;
+  text-shadow: none;
+}
+
+#com-token-actions .com-ra-key {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: calc(-50% + var(--com-ra-kx, 0px)) calc(-50% + var(--com-ra-ky, 0px));
+  min-width: 16px;
+  height: 15px;
+  line-height: 12px;
+  padding: 0 3px;
+  font-size: 9px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--com-ink-dim);
+  background: rgba(10, 13, 18, 0.92);
+  border: 1px solid rgba(203, 213, 229, 0.35);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+#com-token-actions .com-ra:disabled .com-ra-key {
+  opacity: 0.5;
+}
+
+/* Engaged mode (move range / targeting / cone aiming) glows on its control. */
+#com-token-actions .com-ra-mode .com-ra-shape path {
+  fill: rgba(127, 217, 76, 0.14);
+  stroke: var(--com-accent);
+}
+
+#com-token-actions .com-ra-mode .com-ra-icon {
+  color: #d9f7c4;
+}
+
+/* --- COST pill (below the token) --- */
+
+#com-token-actions .com-ra-pill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  translate: -50% -50%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 11px;
+  background: rgba(10, 13, 18, 0.92);
+  border: 1px solid rgba(203, 213, 229, 0.4);
+  border-radius: 3px;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+#com-token-actions .com-ra-pill-label,
+#com-token-actions .com-ra-pill-value {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #aab2c2;
+  line-height: 1.4;
+}
+
+#com-token-actions .com-ra-pill-value {
+  color: #ffffff;
+}
+
+#com-token-actions .com-ra-pill-sep {
+  width: 1px;
+  height: 12px;
+  background: rgba(203, 213, 229, 0.45);
+}
+
+body.com-targeting #board {
+  cursor: crosshair !important;
+}
+
+body.com-overwatch-facing #board {
+  cursor: crosshair !important;
+}
+
+/* Attack forecast shown while hovering a token */
+#com-forecast {
+  position: fixed;
+  transform: translate(-50%, calc(-100% - 8px));
+  background: var(--com-panel);
+  border: 1px solid var(--com-line);
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--com-ink);
+  pointer-events: none;
+  z-index: 91;
+  display: none;
+}
+
+#com-forecast.com-visible {
+  display: block;
+}
+
+#com-forecast .com-forecast-name {
+  font-weight: 700;
+  color: var(--com-warn);
+}
+
+#com-forecast .com-forecast-good { color: #7ddf87; }
+#com-forecast .com-forecast-mid { color: var(--com-warn); }
+#com-forecast .com-forecast-bad { color: #ff8f8f; }
+#com-forecast .com-forecast-dmg { color: #b8c4ff; }
+#com-forecast .com-forecast-cover { color: #ffc04d; }
+
+/* -------------------------------------------- */
+/* Turn order HUD (XCOM-style strip)            */
+/* -------------------------------------------- */
+
+#com-turn-order {
+  position: fixed;
+  top: 8px;
+  left: 50%;
+  z-index: 90;
+  pointer-events: none;
+}
+
+#com-turn-order .com-to {
+  pointer-events: auto;
+  display: flex;
+  align-items: stretch;
+  gap: 0.45em;
+  font-size: calc(var(--com-to-scale, 1) * 12px);
+  background: var(--com-panel);
+  border: 1px solid var(--com-line);
+  border-radius: 0.5em;
+  padding: 0.45em;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  color: var(--com-ink);
+}
+
+/* Round box (also the drag handle) */
+#com-turn-order .com-to-round {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.5em;
+  padding: 0.25em 0.6em;
+  border-right: 1px solid var(--com-line);
+  cursor: grab;
+  user-select: none;
+}
+
+#com-turn-order .com-to-round:active {
+  cursor: grabbing;
+}
+
+#com-turn-order .com-to-round-label {
+  font-size: 0.65em;
+  letter-spacing: 0.15em;
+  color: var(--com-ink-dim);
+  text-transform: uppercase;
+}
+
+#com-turn-order .com-to-round-num {
+  font-size: 1.9em;
+  font-weight: 800;
+  line-height: 1.05;
+  color: #ffffff;
+}
+
+#com-turn-order .com-to-phase {
+  font-size: 0.65em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+#com-turn-order .com-phase-player .com-to-phase {
+  color: var(--com-accent);
+}
+
+#com-turn-order .com-phase-enemy .com-to-phase {
+  color: var(--com-danger);
+}
+
+/* Unit tiles */
+#com-turn-order .com-to-tiles {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0.45em;
+  align-items: center;
+}
+
+#com-turn-order .com-to-tile {
+  position: relative;
+  width: 3.6em;
+  height: 3.6em;
+  border-radius: 0.35em;
+  border: 2px solid #4a5160;
+  overflow: hidden;
+  cursor: pointer;
+  background: #000000;
+  transition: transform 0.12s, border-color 0.12s, opacity 0.12s;
+}
+
+#com-turn-order .com-to-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#com-turn-order .com-to-tile:hover {
+  transform: translateY(-2px);
+  border-color: #aab2c2;
+}
+
+#com-turn-order .com-to-tile.com-side-enemy {
+  border-color: #7a3c34;
+}
+
+#com-turn-order .com-to-tile.com-side-enemy:hover {
+  border-color: var(--com-danger);
+}
+
+#com-turn-order .com-to-tile.com-active {
+  border-color: var(--com-accent);
+  box-shadow: 0 0 0.5em rgba(127, 217, 76, 0.55);
+  transform: translateY(-2px);
+}
+
+#com-turn-order .com-to-tile.com-acted {
+  opacity: 0.55;
+}
+
+#com-turn-order .com-to-tile.com-defeated {
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+#com-turn-order .com-to-ow {
+  position: absolute;
+  top: 0.25em;
+  right: 0.25em;
+  width: 1em;
+  height: 1em;
+  background: url(systems/com/assets/overwatch.svg) center / contain no-repeat;
+}
+
+#com-turn-order .com-to-hp {
+  position: absolute;
+  left: 0.25em;
+  right: 0.25em;
+  bottom: 0.75em;
+  height: 0.45em;
+  background: #2b0f0f;
+  border: 1px solid #000000;
+  border-radius: 0.15em;
+  overflow: hidden;
+}
+
+#com-turn-order .com-to-hp i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #b8452f, #e06c5a);
+}
+
+#com-turn-order .com-to-pips {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.2em;
+  display: flex;
+  justify-content: center;
+  gap: 0.28em;
+}
+
+#com-turn-order .com-to-pips .com-pip {
+  width: 0.42em;
+  height: 0.42em;
+  border-radius: 50%;
+  border: 1px solid var(--com-accent);
+}
+
+#com-turn-order .com-to-pips .com-pip.com-filled {
+  background: var(--com-accent);
+}
+
+/* Hover controls: scale + hide */
+#com-turn-order .com-to-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3em;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+#com-turn-order .com-to:hover .com-to-controls {
+  opacity: 1;
+}
+
+#com-turn-order .com-to-controls button {
+  width: 1.8em;
+  height: 1.8em;
+  line-height: 1;
+  font-size: 0.9em;
+  padding: 0;
+  border-radius: 0.3em;
+  border: 1px solid var(--com-line);
+  background: #171b23;
+  color: var(--com-ink);
+  cursor: pointer;
+}
+
+#com-turn-order .com-to-controls button:hover {
+  background: var(--com-panel-lift);
+  border-color: var(--com-line-soft);
+}
+
+/* Hidden-state restore pill */
+#com-turn-order .com-to-pill {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2em;
+  height: 2.2em;
+  font-size: calc(var(--com-to-scale, 1) * 12px);
+  border-radius: 0.45em;
+  border: 1px solid var(--com-line);
+  background: var(--com-panel);
+  color: var(--com-ink-mid);
+  cursor: grab;
+}
+
+#com-turn-order .com-to-pill:hover {
+  border-color: var(--com-line-soft);
+}
+
+/* -------------------------------------------- */
+/* Battle-mode UI toggle                        */
+/* -------------------------------------------- */
+
+#com-ui-toggle {
+  position: fixed;
+  left: 12px;
+  bottom: calc(12px + var(--com-players-h, 0px));
+  z-index: 100;
+  width: 36px;
+  height: 36px;
+  border-radius: 5px;
+  border: 1px solid var(--com-line);
+  background: var(--com-panel);
+  color: var(--com-ink-mid);
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+
+#com-ui-toggle:hover {
+  background: var(--com-panel-lift);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Hidden core UI: tools, players, scene nav, hotbar, sidebar */
+body.com-ui-hidden #ui-left,
+body.com-ui-hidden #ui-bottom,
+body.com-ui-hidden #ui-right {
+  display: none !important;
+}
+
+/* Keep the macro hotbar button reachable when the UI is hidden */
+body.com-ui-hidden #com-ui-toggle {
+  bottom: 12px;
+}
+
+/* In battle mode (core UI hidden) the status card sits at the screen bottom. */
+body.com-ui-hidden #com-hud {
+  bottom: 12px !important;
+}
+
+/* -------------------------------------------- */
+/* Sheets                                       */
+/* -------------------------------------------- */
+
+.com.sheet {
+  color: #d9d7d4;
+}
+
+.com-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
+}
+
+/* --- Header --- */
+
+.com-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid #3c4238;
+  border-radius: 8px;
+}
+
+.com-header .com-portrait {
+  width: 72px;
+  height: 72px;
+  border-radius: 6px;
+  border: 1px solid #5a5344;
+  object-fit: cover;
+  cursor: pointer;
+  flex: none;
+  transition: border-color 0.15s;
+}
+
+.com-header .com-portrait:hover {
+  border-color: #ffd77a;
+}
+
+.com-header-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.com-header-fields input {
+  width: 100%;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.com-faction {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8b9482;
+}
+
+.com-faction::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+  background: #7fd94c;
+  box-shadow: 0 0 5px rgba(127, 217, 76, 0.7);
+}
+
+.com-faction.com-enemy::before {
+  background: #ff8f8f;
+  box-shadow: 0 0 5px rgba(255, 143, 143, 0.7);
+}
+
+/* --- Stats --- */
+
+.com-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.com-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid #3c4238;
+  border-radius: 6px;
+  padding: 6px 9px;
+}
+
+.com-stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #8b9482;
+}
+
+.com-stat input {
+  width: 100% !important;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e8e6e3;
+}
+
+.com-stat-pair {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.com-stat-pair .com-sep {
+  color: #5a6152;
+  flex: none;
+}
+
+.com-stat.com-downed {
+  border-color: #8f4a4a;
+}
+
+.com-stat.com-downed .com-stat-label {
+  color: #ff8f8f;
+}
+
+.com-stat.com-downed input[name="system.hp.value"] {
+  color: #ff8f8f;
+}
+
+.com-stat-static .com-overwatch-pill {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #5a6152;
+}
+
+.com-stat-static .com-overwatch-pill.com-on {
+  color: #7fd94c;
+  text-shadow: 0 0 8px rgba(127, 217, 76, 0.5);
+}
+
+/* --- AI toggle (GM) --- */
+
+.com-ai-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid #3c4238;
+  border-radius: 999px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.com-ai-toggle input {
+  display: none;
+}
+
+.com-ai-switch {
+  width: 26px;
+  height: 14px;
+  border-radius: 999px;
+  background: #23271f;
+  border: 1px solid #4a5344;
+  position: relative;
+  transition: background 0.15s, border-color 0.15s;
+  flex: none;
+}
+
+.com-ai-switch::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #8b9482;
+  transition: left 0.15s, background 0.15s;
+}
+
+.com-ai-toggle input:checked + .com-ai-switch {
+  background: rgba(255, 143, 143, 0.25);
+  border-color: rgba(255, 143, 143, 0.55);
+}
+
+.com-ai-toggle input:checked + .com-ai-switch::after {
+  left: 13px;
+  background: #ff8f8f;
+}
+
+.com-ai-text {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8b9482;
+}
+
+/* --- Weapons --- */
+
+.com-weapons-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.com-add-weapon {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  background: transparent;
+  border: 1px solid #4a5344;
+  border-radius: 999px;
+  color: #b8bfb0;
+  cursor: pointer;
+}
+
+.com-add-weapon:hover {
+  border-color: #ffd77a;
+  color: #ffd77a;
+}
+
+.com-weapon-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.com-weapon-list li {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid #3c4238;
+  border-radius: 6px;
+  padding: 6px 9px;
+}
+
+.com-weapon-list li.com-armed {
+  border-color: rgba(127, 217, 76, 0.45);
+  background: rgba(127, 217, 76, 0.06);
+}
+
+.com-weapon-img {
+  width: 34px;
+  height: 34px;
+  border-radius: 5px;
+  border: 1px solid #3c4238;
+  background: #000;
+  object-fit: cover;
+  flex: none;
+}
+
+.com-weapon-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.com-weapon-name {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.com-weapon-chips {
+  display: flex;
+  gap: 5px;
+}
+
+.com-chip {
+  font-size: 10.5px;
+  padding: 0 7px;
+  border-radius: 999px;
+  border: 1px solid #3c4238;
+  color: #aab3a2;
+  background: rgba(0, 0, 0, 0.3);
+  line-height: 1.6;
+}
+
+.com-equip {
+  flex: none;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid #4a5344;
+  background: transparent;
+  color: #8b9482;
+  cursor: pointer;
+}
+
+.com-equip.com-equipped {
+  border-color: rgba(127, 217, 76, 0.55);
+  background: rgba(127, 217, 76, 0.12);
+  color: #7fd94c;
+}
+
+.com-icon-btn {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #8b9482;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.com-icon-btn:hover {
+  border-color: #4a5344;
+  color: #e8e6e3;
+}
+
+.com-icon-btn.com-danger:hover {
+  border-color: #8f4a4a;
+  color: #ff8f8f;
+}
+
+/* --- Section titles, description --- */
+
+.com-weapons-header h3,
+.com-section-title {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #8b9482;
+}
+
+.com-weapons-header h3::after,
+.com-section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #3c4238;
+}
+
+.com-hint {
+  color: #8b9482;
+  font-size: 11px;
+  margin: 6px 0 0;
+}
+
+.com-description {
+  width: 100%;
+  min-height: 90px;
+  resize: vertical;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid #3c4238;
+  border-radius: 6px;
+  color: #d9d7d4;
+  padding: 7px 9px;
+}
+
+.com-description:focus,
+.com-stat input:focus {
+  border-color: rgba(255, 215, 122, 0.55);
+  outline: none;
+}
+
+/* -------------------------------------------- */
+/* Chat cards                                   */
+/* -------------------------------------------- */
+
+.com-card {
+  border: 1px solid #3c4238;
+  border-radius: 6px;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.com-card-header {
+  background: #23271f;
+  color: #b8cf9a;
+  font-weight: 700;
+  padding: 4px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+}
+
+.com-card-body {
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.com-card-weapon {
+  color: #8b9482;
+  font-size: 11px;
+}
+
+.com-card-cover {
+  color: #ffc04d;
+  font-size: 12px;
+}
+
+.com-result {
+  font-weight: 700;
+  padding: 0 4px;
+  border-radius: 3px;
+}
+
+.com-hit {
+  color: #10230a;
+  background: #7fd94c;
+}
+
+.com-miss {
+  color: #2b0a0a;
+  background: #e06c5a;
+}
+
+.com-down {
+  color: #2b0a0a;
+  background: #e0a26a;
+  margin-left: 4px;
+}
+
+/* Test fight menu */
+.com-test-fight-btn {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 8px 14px;
+  border: 1px solid #7fd94c66;
+  border-radius: 6px;
+  background: rgba(127, 217, 76, 0.1);
+  color: #7fd94c;
+  cursor: pointer;
+}
+
+.com-test-fight-btn:hover {
+  background: rgba(127, 217, 76, 0.2);
+}

@@ -1,0 +1,13 @@
+{
+  "_id": "comwshotgun000001",
+  "name": "Combat Shotgun",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-double-barrel.webp",
+  "system": {
+    "damage": "2d6",
+    "range": 4,
+    "equipped": false,
+    "description": "Double-barreled door opener. Devastating within a room, useless across a street."
+  },
+  "flags": {}
+}

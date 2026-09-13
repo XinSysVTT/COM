@@ -1,0 +1,86 @@
+<div class="com-sheet">
+  <header class="com-header">
+    <img class="com-portrait" src="{{document.img}}" alt="{{document.name}}" data-action="pickImage" title="Click to change image">
+    <div class="com-header-fields">
+      <input type="text" name="name" value="{{document.name}}" placeholder="Name">
+      <div class="com-faction {{factionClass}}" title="{{localize "COM.Sheet.FactionHint"}}">
+        {{#if faction}}{{faction}}{{else}}{{localize "COM.Sheet.FactionHint"}}{{/if}}
+      </div>
+    </div>
+  </header>
+
+  <div class="com-stats">
+    <label class="com-stat {{#if downed}}com-downed{{/if}}">
+      <span class="com-stat-label">{{localize "COM.Sheet.HP"}}</span>
+      <span class="com-stat-pair">
+        <input type="number" name="system.hp.value" value="{{system.hp.value}}" min="0" data-dtype="Number">
+        <span class="com-sep">/</span>
+        <input type="number" name="system.hp.max" value="{{system.hp.max}}" min="1" data-dtype="Number">
+      </span>
+    </label>
+    <label class="com-stat">
+      <span class="com-stat-label">{{localize "COM.Sheet.AP"}}</span>
+      <span class="com-stat-pair">
+        <input type="number" name="system.ap.value" value="{{system.ap.value}}" min="0" data-dtype="Number">
+        <span class="com-sep">/</span>
+        <input type="number" name="system.ap.max" value="{{system.ap.max}}" min="1" data-dtype="Number">
+      </span>
+    </label>
+    <label class="com-stat">
+      <span class="com-stat-label">{{localize "COM.Sheet.Aim"}}</span>
+      <input type="number" name="system.aim" value="{{system.aim}}" data-dtype="Number">
+    </label>
+    <label class="com-stat">
+      <span class="com-stat-label">{{localize "COM.Sheet.Defense"}}</span>
+      <input type="number" name="system.defense" value="{{system.defense}}" data-dtype="Number">
+    </label>
+    <label class="com-stat" title="Grid cells moved per 1 AP">
+      <span class="com-stat-label">{{localize "COM.Sheet.Speed"}}</span>
+      <input type="number" name="system.speed" value="{{system.speed}}" min="1" data-dtype="Number">
+    </label>
+    <div class="com-stat com-stat-static" title="{{localize "COM.Sheet.FactionHint"}}">
+      <span class="com-stat-label">{{localize "COM.Sheet.Overwatch"}}</span>
+      <span class="com-overwatch-pill {{#if system.overwatch}}com-on{{/if}}">{{#if system.overwatch}}ON{{else}}—{{/if}}</span>
+    </div>
+  </div>
+
+  {{#if isGM}}
+  <label class="com-ai-toggle" title="{{localize "COM.AI.SheetNoAIHint"}}">
+    <input type="checkbox" name="flags.com.noAI" {{#if noAI}}checked{{/if}}>
+    <span class="com-ai-switch"></span>
+    <span class="com-ai-text">{{localize "COM.AI.SheetNoAI"}}</span>
+  </label>
+  {{/if}}
+
+  <div class="com-weapons">
+    <div class="com-weapons-header">
+      <h3>{{localize "COM.Sheet.Weapons"}}</h3>
+      <button type="button" data-action="addWeapon" class="com-add-weapon">+ {{localize "COM.Sheet.AddWeapon"}}</button>
+    </div>
+    {{#if hasWeapons}}
+    <ul class="com-weapon-list">
+      {{#each weapons}}
+      <li data-item-id="{{id}}" class="{{#if equipped}}com-armed{{/if}}">
+        <img class="com-weapon-img" src="{{img}}" alt="{{name}}">
+        <div class="com-weapon-info">
+          <span class="com-weapon-name">{{name}}</span>
+          <span class="com-weapon-chips">
+            <span class="com-chip">{{damage}}</span>
+            <span class="com-chip">{{range}} {{localize "COM.Sheet.Range"}}</span>
+          </span>
+        </div>
+        <button type="button" data-action="toggleWeapon" class="com-equip {{#if equipped}}com-equipped{{/if}}"
+          title="Toggle equipped">{{#if equipped}}{{localize "COM.Sheet.Equipped"}}{{else}}{{localize "COM.Sheet.Equip"}}{{/if}}</button>
+        <button type="button" data-action="editWeapon" class="com-icon-btn" title="{{localize "COM.Sheet.Edit"}}">✎</button>
+        <button type="button" data-action="deleteWeapon" class="com-icon-btn com-danger" title="{{localize "COM.Sheet.Delete"}}">🗑</button>
+      </li>
+      {{/each}}
+    </ul>
+    {{else}}
+    <p class="com-hint">{{localize "COM.Sheet.NoWeapons"}}</p>
+    {{/if}}
+  </div>
+
+  <h3 class="com-section-title">{{localize "COM.Sheet.Description"}}</h3>
+  <textarea class="com-description" name="system.description" rows="5">{{system.description}}</textarea>
+</div>

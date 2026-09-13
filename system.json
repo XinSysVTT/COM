@@ -1,0 +1,34 @@
+{
+  "id": "com",
+  "title": "Crisis Operations Management - COM",
+  "description": "Crisis Operations Management — an XCOM-style tactical system: AP-based actions, side-based turns (players act, then enemies), click-to-move with a highlighted movement range, attacks and overwatch.",
+  "version": "0.1.6",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "vilks"
+    }
+  ],
+  "esmodules": [
+    "module/tactics.mjs"
+  ],
+  "styles": [
+    "styles/tactics.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "grid": {
+    "distance": 1,
+    "units": "sq",
+    "type": 1
+  },
+  "primaryTokenAttribute": "system.hp"
+}

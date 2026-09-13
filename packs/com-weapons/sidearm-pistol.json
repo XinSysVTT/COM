@@ -1,0 +1,13 @@
+{
+  "_id": "comwpistol000001",
+  "name": "Sidearm Pistol",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-pistol-wood.webp",
+  "system": {
+    "damage": "1d6+1",
+    "range": 8,
+    "equipped": false,
+    "description": "Semi-automatic service pistol. Short range, but it has saved more lives than any rifle — usually as a last resort."
+  },
+  "flags": {}
+}

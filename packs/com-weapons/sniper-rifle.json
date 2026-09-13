@@ -1,0 +1,13 @@
+{
+  "_id": "comwsniper0000001",
+  "name": "Sniper Rifle",
+  "type": "weapon",
+  "img": "icons/weapons/guns/rifle-sniper-long.webp",
+  "system": {
+    "damage": "2d8",
+    "range": 20,
+    "equipped": false,
+    "description": "Scoped marksman rifle. Reaches across the entire map — patience and steady hands included at no extra cost."
+  },
+  "flags": {}
+}

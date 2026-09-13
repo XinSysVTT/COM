@@ -1,0 +1,128 @@
+{
+  "COM": {
+    "TurnOrder": {
+      "Round": "Round",
+      "PlayerPhase": "Player Phase",
+      "EnemyPhase": "Enemy Phase",
+      "DragHint": "Drag to move",
+      "Hide": "Hide turn order",
+      "Show": "Show turn order",
+      "Bigger": "Bigger",
+      "Smaller": "Smaller"
+    },
+    "AI": {
+      "SettingName": "Enemy AI",
+      "SettingHint": "Hostile units act automatically on their turn: advance, attack, overwatch, and flee when badly wounded. Runs on the GM client.",
+      "FleeMsg": "retreats!",
+      "SheetNoAI": "Disable AI",
+      "SheetNoAIHint": "This unit's turns are played manually even with Enemy AI enabled."
+    },
+    "UiToggle": {
+      "SettingName": "Hide Core UI (Battle Mode)",
+      "Title": "Toggle Foundry interface",
+      "KeybindName": "Toggle Battle Mode",
+      "KeybindHint": "Hides or shows Foundry's standard interface (tools, players list, navigation, hotbar, sidebar)."
+    },
+    "Keys": {
+      "Move": "Move",
+      "Attack": "Attack",
+      "Overwatch": "Overwatch",
+      "EndTurn": "End Turn",
+      "Hint": "Acts for your controlled unit (or the active unit) in combat."
+    },
+    "Combat": {
+      "PlayerVictory": "Area Secured — Victory!",
+      "EnemyVictory": "Squad Wiped — Defeat",
+      "Draw": "Mutual Destruction — Stalemate"
+    },
+    "Hud": {
+      "Title": "Tactical Actions",
+      "Move": "Move (1 AP)",
+      "Attack": "Attack (1 AP)",
+      "Overwatch": "Overwatch (1 AP)",
+      "EndTurn": "End Turn",
+      "MoveName": "Move",
+      "AttackName": "Attack",
+      "OverwatchName": "Overwatch",
+      "EndTurnName": "End Turn",
+      "Cost": "Cost",
+      "ApShort": "AP",
+      "EndShort": "End",
+      "TurnShort": "Turn",
+      "SelectHint": "Select a unit to see tactical actions.",
+      "MoveModeHint": "Click a highlighted tile to move. ESC to cancel.",
+      "TargetingHint": "Click an enemy to target and attack it. ESC to cancel.",
+      "OverwatchModeHint": "Click to set the overwatch cone — enemies entering it are shot. ESC to cancel.",
+      "NoTarget": "No target — aim at an enemy first (T key or double-click).",
+      "HP": "HP",
+      "AP": "AP",
+      "Target": "Target"
+    },
+    "Notif": {
+      "NoActor": "That token has no unit sheet.",
+      "NotOwner": "You do not control that unit.",
+      "NotYourTurn": "It is not that unit's turn.",
+      "NoAP": "Not enough AP.",
+      "Downed": "That unit is down.",
+      "TargetDown": "Target is already down.",
+      "OutOfRange": "Target is out of weapon range.",
+      "NoLOS": "No line of sight to target.",
+      "AlreadyOverwatch": "Unit is already on overwatch.",
+      "HexUnsupported": "Hex grids are not supported yet — use a square grid scene.",
+      "NoCombatTurn": "No active combat turn."
+    },
+    "Card": {
+      "Attack": "Attack",
+      "OverwatchAttack": "Overwatch!",
+      "HitChance": "Hit chance",
+      "Roll": "d100",
+      "Hit": "HIT",
+      "Miss": "MISS",
+      "Damage": "Damage",
+      "Cover": "Cover",
+      "Downed": "TARGET DOWN!"
+    },
+    "Cover": {
+      "Name": "Cover Height",
+      "Hint": "Shots at a unit standing against this wall are penalized: Half −20%, Three-Quarter −30%, Full −40%. Does not change what the wall blocks — set sight separately. Melee ignores cover. Only the wall the unit stands against counts.",
+      "LevelNone": "None",
+      "LevelHalf": "Half",
+      "LevelThreeQuarter": "Three-Quarter",
+      "LevelFull": "Full"
+    },
+    "Sheet": {
+      "Unit": "Unit Sheet",
+      "Weapon": "Weapon Sheet",
+      "HP": "HP",
+      "AP": "AP",
+      "Aim": "Aim",
+      "Defense": "Defense",
+      "Speed": "Speed",
+      "Overwatch": "On Overwatch",
+      "PlayerSide": "Player Side",
+      "EnemySide": "Enemy Side",
+      "FactionHint": "Faction follows the token's disposition: Hostile = enemy side, otherwise player side.",
+      "Equip": "Equip",
+      "Equipped": "Equipped",
+      "Description": "Description",
+      "Weapons": "Weapons",
+      "AddWeapon": "Add Weapon",
+      "Damage": "Damage",
+      "Range": "Range",
+      "Edit": "Edit",
+      "Delete": "Delete",
+      "NoWeapons": "No weapons — the unit falls back to unarmed strikes."
+    },
+    "TestFight": {
+      "Title": "Test Fight",
+      "SettingName": "Test Fight",
+      "Button": "Run Test Fight",
+      "Hint": "Creates a dedicated Test Fight Arena map with two friendly troopers and two hostile raiders, restores everyone to full health, and starts a fresh combat. Running it again resets the same fight.",
+      "Started": "Test fight started — 2 friendly vs 2 hostiles at full health."
+    },
+    "Weapon": {
+      "Unarmed": "Unarmed",
+      "NewWeapon": "New Weapon"
+    }
+  }
+}

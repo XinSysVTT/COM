@@ -1,0 +1,33 @@
+<div class="com-hud {{#if unit}}com-has-unit{{else}}com-empty{{/if}}">
+  {{#if unit}}
+  <div class="com-hud-card">
+    <img class="com-hud-portrait" src="{{unit.img}}" alt="{{unit.name}}">
+    <div class="com-hud-info">
+      <div class="com-hud-name"><span>{{unit.name}}</span>{{#if unit.overwatch}} <span class="com-overwatch-tag" title="On Overwatch">OW</span>{{/if}}</div>
+      <div class="com-hud-bars">
+        <span class="com-hud-label">{{localize "COM.Hud.HP"}}</span>
+        <span class="com-hud-hpbar"><i style="width: {{unit.hpPct}}%"></i></span>
+        <span class="com-hud-hpnum">{{unit.hp}}/{{unit.hpMax}}</span>
+        <span class="com-hud-label">{{localize "COM.Hud.AP"}}</span>
+        <span class="com-pips">{{#each pips}}<i class="com-pip {{#if this.filled}}com-filled{{/if}}"></i>{{/each}}</span>
+      </div>
+      {{#if target}}
+      <div class="com-hud-target"><i class="fas fa-crosshairs"></i><span>{{target}}</span></div>
+      {{/if}}
+    </div>
+  </div>
+  {{#if showActions}}
+  <div class="com-hud-actions">
+    <button type="button" data-action="move" {{#unless canMove}}disabled{{/unless}}>{{{comIcon "move"}}}<span>{{localize "COM.Hud.MoveName"}}</span><b>1</b></button>
+    <button type="button" data-action="attack" {{#unless canAttack}}disabled{{/unless}}>{{{comIcon "attack"}}}<span>{{localize "COM.Hud.AttackName"}}</span><b>2</b></button>
+    <button type="button" data-action="overwatch" {{#unless canOverwatch}}disabled{{/unless}}>{{{comIcon "overwatch"}}}<span>{{localize "COM.Hud.OverwatchName"}}</span><b>3</b></button>
+    <button type="button" data-action="endTurn" class="com-hud-end" {{#unless inCombat}}disabled{{/unless}}>{{{comIcon "endTurn"}}}<span>{{localize "COM.Hud.EndTurnName"}}</span><b>F</b></button>
+  </div>
+  {{/if}}
+  {{#if moveMode}}<div class="com-hud-mode">{{localize "COM.Hud.MoveModeHint"}}</div>{{/if}}
+  {{#if targeting}}<div class="com-hud-mode">{{localize "COM.Hud.TargetingHint"}}</div>{{/if}}
+  {{#if overwatchMode}}<div class="com-hud-mode">{{localize "COM.Hud.OverwatchModeHint"}}</div>{{/if}}
+  {{else}}
+  <div class="com-hud-hint">{{localize "COM.Hud.SelectHint"}}</div>
+  {{/if}}
+</div>

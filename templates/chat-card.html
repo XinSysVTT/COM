@@ -1,0 +1,15 @@
+<div class="com-card">
+  <div class="com-card-header">{{#if reaction}}{{localize "COM.Card.OverwatchAttack"}}{{else}}{{localize "COM.Card.Attack"}}{{/if}}</div>
+  <div class="com-card-body">
+    <div class="com-card-line"><strong>{{attackerName}}</strong> → <strong>{{targetName}}</strong> <span class="com-card-weapon">({{weaponName}})</span></div>
+    {{#if coverLabel}}<div class="com-card-line com-card-cover">{{localize "COM.Card.Cover"}}: <strong>{{coverLabel}}</strong></div>{{/if}}
+    <div class="com-card-line">{{localize "COM.Card.HitChance"}}: <strong>{{chance}}%</strong> — {{localize "COM.Card.Roll"}}: <strong>{{hitRollTotal}}</strong>
+      <span class="com-result {{#if hit}}com-hit{{else}}com-miss{{/if}}">{{#if hit}}{{localize "COM.Card.Hit"}}{{else}}{{localize "COM.Card.Miss"}}{{/if}}</span>
+    </div>
+    {{#if hit}}
+    <div class="com-card-line">{{localize "COM.Card.Damage"}}: <strong>{{damage}}</strong> — {{targetName}} HP: {{oldHp}} → {{newHp}}
+      {{#if downed}}<span class="com-result com-down">{{localize "COM.Card.Downed"}}</span>{{/if}}
+    </div>
+    {{/if}}
+  </div>
+</div>
