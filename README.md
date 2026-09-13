@@ -1,7 +1,5 @@
 # Crisis Operations Management — COM
 
-![Foundry VTT v13+](https://img.shields.io/badge/FoundryVTT-v13%2B-red) ![System](https://img.shields.io/badge/system-com-blue) ![Version](https://img.shields.io/badge/version-0.1.6-green)
-
 Crisis Operations Management (**COM**) is a lightweight, **XCOM-style tactical system** for Foundry Virtual Tabletop: side-based turns, AP-driven actions, click-to-move with a highlighted movement range, hit-chance attacks with a live forecast, overwatch cones, wall cover — and a command ring around the active unit so it plays like a video game, not a spreadsheet.
 
 ![The command ring around the active unit, an overwatching raider and the turn-order strip](assets/screenshots/hero-command-ring.png)
