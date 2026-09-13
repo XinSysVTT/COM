@@ -80,12 +80,6 @@ The **status card** (bottom center) shows the selected unit out of combat and ho
 https://raw.githubusercontent.com/XinSysVTT/foundryvtt-com/main/system.json
 ```
 
-**From source (development):** point Foundry at a data directory containing this repo as a system folder, e.g. a junction/symlink:
-
-```bat
-mklink /J "<FoundryData>\Data\systems\com" "D:\Coding\Reps\COM"
-```
-
 Requires Foundry Virtual Tabletop v13 or newer (verified on v14).
 
 ## How it fits together
