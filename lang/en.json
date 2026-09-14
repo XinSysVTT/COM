@@ -90,6 +90,16 @@
       "LevelThreeQuarter": "Three-Quarter",
       "LevelFull": "Full"
     },
+    "Props": {
+      "Title": "Cover Props",
+      "Open": "Cover props — drag onto the map",
+      "Hint": "Drag a prop onto the map to place it. Units standing against it are harder to hit from the far side (Half −20%, Three-Quarter −30%, Full −40%). Props block movement but never sight, and they cannot be shot.",
+      "Placed": "{name} placed.",
+      "crate": "Wooden Crate",
+      "sandbags": "Sandbag Stack",
+      "barrel": "Fuel Barrel",
+      "container": "Shipping Container"
+    },
     "Sheet": {
       "Unit": "Unit Sheet",
       "Weapon": "Weapon Sheet",

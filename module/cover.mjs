@@ -11,6 +11,12 @@
  * cells of the defender's center). So only the wall the defender stands
  * against counts — never a mid-field fence the shot flies over, and never
  * a wall behind the target relative to the shooter.
+ *
+ * Cover props work the same way: a token carrying a `flags.com.prop` level
+ * (dropped from the props palette) contributes its footprint's four edges
+ * as cover segments. Defenders adjacent to the prop get cover from the far
+ * side, exactly as if they stood against a flagged wall. A prop's edges
+ * never count as open doors, and hidden tokens are ignored.
  */
 import { SQ } from "./config.mjs";
 import * as H from "./helpers.mjs";
@@ -24,8 +30,9 @@ export function wallCoverLevel(wallDoc) {
 
 /**
  * Flagged cover segments of the active scene as
- * { a, b, level, openDoor } — cached, invalidated on any wall change
- * (flag or door state updates both arrive as updateWall).
+ * { a, b, level, openDoor } — cached, invalidated on any wall or token
+ * change (wall flags and door states arrive as updateWall, prop tokens as
+ * create/update/deleteToken).
  */
 let _coverWalls = null;
 
@@ -43,6 +50,26 @@ function coverWalls() {
       level,
       openDoor
     });
+  }
+  const s = canvas.grid.size;
+  for (const t of canvas.tokens.placeables) {
+    const doc = t.document;
+    if (doc.hidden) continue;
+    const level = Math.clamp(Number(doc.getFlag?.(SQ.id, "prop") ?? 0) || 0, 0, 3);
+    if (level <= 0) continue;
+    const x0 = doc.x;
+    const y0 = doc.y;
+    const x1 = x0 + doc.width * s;
+    const y1 = y0 + doc.height * s;
+    const edges = [
+      [{ x: x0, y: y0 }, { x: x1, y: y0 }],
+      [{ x: x0, y: y1 }, { x: x1, y: y1 }],
+      [{ x: x0, y: y0 }, { x: x0, y: y1 }],
+      [{ x: x1, y: y0 }, { x: x1, y: y1 }]
+    ];
+    for (const [a, b] of edges) {
+      _coverWalls.push({ a, b, level, openDoor: false });
+    }
   }
   return _coverWalls;
 }
@@ -88,7 +115,7 @@ export function coverLabel(level) {
 /* -------------------------------------------- */
 
 export function registerCover() {
-  for (const hook of ["createWall", "updateWall", "deleteWall"]) {
+  for (const hook of ["createWall", "updateWall", "deleteWall", "createToken", "updateToken", "deleteToken"]) {
     Hooks.on(hook, () => invalidateCoverCache());
   }
 

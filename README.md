@@ -38,6 +38,10 @@ Cover never changes what a wall blocks: set sight and movement per wall as usual
 
 ![Cover Height dropdown in the wall config](assets/screenshots/wall-cover-config.png)
 
+### Cover props
+
+No walls where you need cover? The **box button** (bottom-left, GM only) opens the **Cover Props** palette: drag a wooden crate, a sandbag stack, a fuel barrel or a shipping container onto the map and it snaps to the grid as a placeable object. Its footprint acts exactly like a flagged wall — stand against it and shooters on the far side eat the cover penalty (crates and sandbags Half, the barrel Three-Quarter, the 2×1 container Full). Props block movement but never sight, can't be shot or selected as targets, and don't take part in the turn order — they're just furniture that saves lives.
+
 ### Overwatch
 
 1 AP puts a unit on overwatch covering a **90° cone** out to weapon range — a blue cone preview sweeps with the mouse, click to lock the facing. Any enemy that *steps into* the cone with line of sight takes a reaction shot at a −20 penalty. Moves are checked tile by tile, so an enemy passing *through* the cone gets shot even if it never stops inside it. The cone stays visible while the unit is selected.
@@ -55,7 +59,7 @@ Cover never changes what a wall blocks: set sight and movement per wall as usual
 
 ## Playing
 
-1. **Scene** — use a **square grid** (hex grids are not supported yet). Draw walls as usual; give the ones you want fighting over a Cover Height.
+1. **Scene** — use a **square grid** (hex grids are not supported yet). Draw walls as usual; give the ones you want fighting over a Cover Height, or drop cover props from the box button (bottom-left).
 2. **Units** — create `unit` actors. A token's **disposition decides its side**: `Hostile` = enemy side, anything else = player side.
 3. **Weapons** — add `weapon` items on the unit sheet (damage formula, range in grid cells, equipped state), or drag them from the **COM Arsenal** compendium (assault rifles, sidearms, shotguns, sniper rifles, melee, explosives — the first dropped weapon is auto-equipped). Without a weapon a unit falls back to 1-damage unarmed strikes.
 4. **Combat** — add tokens to the combat tracker and start. Turns are grouped players-then-enemies automatically.

@@ -6,6 +6,7 @@
  * range, and overwatch reaction shots.
  */
 import { SQ } from "./config.mjs";
+import { UnitData, WeaponData } from "./models.mjs";
 import { invalidateWallCache } from "./helpers.mjs";
 import { registerTargeting } from "./targeting.mjs";
 import { registerCombat, endTurn } from "./combat.mjs";
@@ -20,6 +21,7 @@ import { registerUIToggle, toggleCoreUI } from "./ui-toggle.mjs";
 import { registerTokenOverlay } from "./token-overlay.mjs";
 import { registerTokenActions, refreshTokenActions } from "./token-actions.mjs";
 import { registerCover } from "./cover.mjs";
+import { registerProps } from "./props.mjs";
 import { computeReachable } from "./movement.mjs";
 import { TacticsHud } from "./hud.mjs";
 import { TurnOrderHud, registerTurnOrderSettings } from "./turn-order.mjs";
@@ -31,6 +33,11 @@ Hooks.once("init", () => {
   // Document type labels (used in sheet titles etc.)
   CONFIG.Actor.typeLabels.unit = "Unit";
   CONFIG.Item.typeLabels.weapon = "Weapon";
+
+  // Data models behind the types declared in system.json documentTypes
+  // (replaces the removed template.json and its default values).
+  CONFIG.Actor.dataModels.unit = UnitData;
+  CONFIG.Item.dataModels.weapon = WeaponData;
 
   // Uniform action icons, shared by the command ring and the HUD card.
   Handlebars.registerHelper("comIcon", (name) => new Handlebars.SafeString(comIcon(name)));
@@ -60,6 +67,7 @@ Hooks.once("init", () => {
   registerTokenActions();
   registerTargeting();
   registerCover();
+  registerProps();
 
   // Wall geometry changed: forget cached segments used by pathfinding and
   // the line-of-sight data behind overwatch cones.
@@ -100,7 +108,7 @@ Hooks.once("ready", () => {
 
   // Public API (also handy for debugging and macros).
   game.com = {
-    version: "0.1.6",
+    version: "0.1.7",
     hud,
     turnOrder,
     attack: attackAction,

@@ -1,0 +1,12 @@
+<p class="com-props-hint">{{hint}}</p>
+<div class="com-props-grid">
+  {{#each props}}
+  <div class="com-prop" data-prop="{{key}}" draggable="true" title="{{name}} — {{size}} · {{levelLabel}}">
+    <img class="com-prop-img" src="{{img}}" alt="{{name}}" draggable="false">
+    <div class="com-prop-body">
+      <div class="com-prop-name">{{name}}</div>
+      <div class="com-prop-meta">{{size}} · {{levelLabel}}</div>
+    </div>
+  </div>
+  {{/each}}
+</div>

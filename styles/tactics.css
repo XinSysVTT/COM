@@ -735,6 +735,94 @@ body.com-ui-hidden #com-ui-toggle {
   bottom: 12px;
 }
 
+/* -------------------------------------------- */
+/* Cover props palette                          */
+/* -------------------------------------------- */
+
+/* Launcher button, stacked above the battle-mode eye button. */
+#com-props-open {
+  position: fixed;
+  left: 12px;
+  bottom: calc(56px + var(--com-players-h, 0px));
+  z-index: 100;
+  width: 36px;
+  height: 36px;
+  border-radius: 5px;
+  border: 1px solid var(--com-line);
+  background: var(--com-panel);
+  color: var(--com-ink-mid);
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+
+#com-props-open:hover {
+  background: var(--com-panel-lift);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+body.com-ui-hidden #com-props-open {
+  bottom: 56px;
+}
+
+.com-props-hint {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--com-ink-mid, #9a9891);
+  line-height: 1.4;
+}
+
+.com-props-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.com-prop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border: 1px solid var(--com-line, #3a3a3a);
+  border-radius: 6px;
+  background: var(--com-panel, #1e1e1e);
+  cursor: grab;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.com-prop:hover {
+  background: var(--com-panel-lift, #2a2a2a);
+  border-color: var(--com-line-soft, #555);
+}
+
+.com-prop:active {
+  cursor: grabbing;
+}
+
+.com-prop-img {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+}
+
+.com-prop-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8e6e2;
+}
+
+.com-prop-meta {
+  font-size: 11px;
+  color: var(--com-ink-mid, #9a9891);
+  margin-top: 2px;
+}
+
 /* In battle mode (core UI hidden) the status card sits at the screen bottom. */
 body.com-ui-hidden #com-hud {
   bottom: 12px !important;
