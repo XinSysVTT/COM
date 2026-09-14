@@ -2,9 +2,15 @@
  * The unit actor sheet: HP/AP/aim/defense/speed, weapon list, description.
  */
 import { SQ } from "../config.mjs";
+import * as H from "../helpers.mjs";
 
 const api = foundry.applications.api;
 const SheetBase = api.HandlebarsApplicationMixin(api.DocumentSheetV2);
+
+/** Effective "AI plays this unit" state, honoring the legacy noAI flag. */
+function aiControlsUnit(actor) {
+  return H.isAIControlled(actor);
+}
 
 export class UnitSheet extends SheetBase {
   static DEFAULT_OPTIONS = {
@@ -40,33 +46,48 @@ export class UnitSheet extends SheetBase {
         range: i.system.range,
         equipped: i.system.equipped
       }));
-    // Faction badge: derived from this actor's token in the viewed scene.
-    const sceneToken = canvas.tokens?.placeables?.find((t) => t.actor === this.document);
-    const hostile = sceneToken?.document.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE;
+    // The actor's prototype disposition is the source of truth for which
+    // side the unit fights on; placed tokens follow via updateActor.
+    const disposition = this.document.prototypeToken?.disposition
+      ?? CONST.TOKEN_DISPOSITIONS.NEUTRAL;
+    const sideOptions = [
+      { value: CONST.TOKEN_DISPOSITIONS.FRIENDLY, label: game.i18n.localize("COM.Side.Friendly") },
+      { value: CONST.TOKEN_DISPOSITIONS.NEUTRAL, label: game.i18n.localize("COM.Side.Neutral") },
+      { value: CONST.TOKEN_DISPOSITIONS.HOSTILE, label: game.i18n.localize("COM.Side.Enemy") }
+    ].map((o) => ({ ...o, selected: o.value === disposition }));
+    const sideClass = disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE
+      ? "com-enemy"
+      : disposition === CONST.TOKEN_DISPOSITIONS.NEUTRAL ? "com-neutral" : "com-player";
+    const sideLabel = game.i18n.localize(
+      disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE
+        ? "COM.Side.Enemy"
+        : disposition === CONST.TOKEN_DISPOSITIONS.NEUTRAL
+          ? "COM.Side.Neutral"
+          : "COM.Side.Friendly"
+    );
     return Object.assign(context, {
       system: this.document.system,
       weapons,
       hasWeapons: weapons.length > 0,
-      noAI: !!this.document.getFlag("com", "noAI"),
+      aiControlled: aiControlsUnit(this.document),
       isGM: game.user.isGM,
       downed: this.document.system.hp.value <= 0,
-      faction: sceneToken
-        ? game.i18n.localize(hostile ? "COM.Sheet.EnemySide" : "COM.Sheet.PlayerSide")
-        : null,
-      factionClass: hostile ? "com-enemy" : "com-player"
+      sideOptions,
+      sideLabel,
+      factionClass: sideClass
     });
   }
 
   /**
    * @override
-   * Unchecked checkboxes are absent from FormData; force the noAI flag to
-   * false so toggling the opt-out off actually clears it.
+   * Unchecked checkboxes are absent from FormData; force the AI-controlled
+   * flag so toggling it off actually clears it.
    */
   _prepareSubmitData(event, form, formData) {
     const data = super._prepareSubmitData(event, form, formData);
     data.flags = data.flags ?? {};
     data.flags.com = Object.assign({}, data.flags.com, {
-      noAI: !!form.querySelector('input[name="flags.com.noAI"]')?.checked
+      aiControlled: !!form.querySelector('input[name="flags.com.aiControlled"]')?.checked
     });
     return data;
   }
@@ -144,3 +165,24 @@ export class UnitSheet extends SheetBase {
     fp.render(true);
   }
 }
+
+/**
+ * Keep placed tokens in step with the sheet's side selector: when an actor's
+ * prototype disposition changes, push it onto every token of that actor in
+ * every scene. Linked tokens would follow on their own; this covers the
+ * unlinked copies most COM worlds are built from.
+ */
+Hooks.on("updateActor", (actor, change) => {
+  if (!game.user.isGM) return;
+  const disp = change?.prototypeToken?.disposition;
+  if (disp === undefined) return;
+  for (const scene of game.scenes) {
+    const updates = scene.tokens
+      .filter((t) => t.actorId === actor.id && t.disposition !== disp)
+      .map((t) => ({ _id: t.id, disposition: disp }));
+    if (updates.length) {
+      scene.updateEmbeddedDocuments("Token", updates)
+        .catch((err) => console.warn("COM: side sync failed", err));
+    }
+  }
+});

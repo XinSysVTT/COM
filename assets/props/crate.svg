@@ -1,6 +1,49 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect x="8" y="8" width="84" height="84" rx="7" fill="#a06a35" stroke="#43280f" stroke-width="6"/>
-  <path d="M18 22 82 78 M82 22 18 78" stroke="#7c4c20" stroke-width="11" stroke-linecap="round"/>
-  <path d="M8 34h84 M8 66h84" stroke="#43280f" stroke-width="3" opacity="0.4"/>
-  <path d="M34 8v84 M66 8v84" stroke="#43280f" stroke-width="3" opacity="0.4"/>
+  <defs>
+    <radialGradient id="shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.38"/>
+      <stop offset="65%" stop-color="#000000" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="#b58048"/>
+      <stop offset="55%" stop-color="#916031"/>
+      <stop offset="100%" stop-color="#63401d"/>
+    </linearGradient>
+    <linearGradient id="brace" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c08a52"/>
+      <stop offset="100%" stop-color="#7a4e22"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="52" cy="53" rx="46" ry="44" fill="url(#shadow)"/>
+
+  <!-- lid bed -->
+  <rect x="9" y="9" width="82" height="82" rx="6" fill="url(#wood)" stroke="#3a2410" stroke-width="3"/>
+  <!-- plank seams -->
+  <path d="M9 30h82M9 50h82M9 70h82" stroke="#3a2410" stroke-width="2.2" opacity="0.55"/>
+  <!-- plank highlights -->
+  <path d="M11 28h78M11 48h78M11 68h78" stroke="#d69a5c" stroke-opacity="0.35" stroke-width="1.6"/>
+  <!-- wood grain -->
+  <path d="M20 38q10-3 22 0M55 58q12-4 24 0M18 78q14-4 26 0M62 18q10-2 18 0" stroke="#54371a" stroke-width="1.6" fill="none" opacity="0.45"/>
+  <!-- knots -->
+  <circle cx="30" cy="60" r="2.2" fill="#54371a" opacity="0.6"/>
+  <circle cx="72" cy="40" r="1.8" fill="#54371a" opacity="0.55"/>
+
+  <!-- X brace boards, beveled -->
+  <g stroke="#3a2410" stroke-width="2.5" stroke-linejoin="round">
+    <path d="M17 15l68 70-8 4-68-70z" fill="url(#brace)"/>
+    <path d="M83 15l-68 70 8 4 68-70z" fill="url(#brace)"/>
+  </g>
+  <path d="M19 17l64 66M81 17L17 83" stroke="#dca368" stroke-opacity="0.5" stroke-width="1.6"/>
+
+  <!-- frame -->
+  <rect x="9" y="9" width="82" height="82" rx="6" fill="none" stroke="#4a2d12" stroke-width="7"/>
+  <rect x="12.5" y="12.5" width="75" height="75" rx="4" fill="none" stroke="#c08a52" stroke-opacity="0.4" stroke-width="1.8"/>
+
+  <!-- corner nails -->
+  <circle cx="15" cy="15" r="2.4" fill="#2b1a0a"/>
+  <circle cx="85" cy="15" r="2.4" fill="#2b1a0a"/>
+  <circle cx="15" cy="85" r="2.4" fill="#2b1a0a"/>
+  <circle cx="85" cy="85" r="2.4" fill="#2b1a0a"/>
 </svg>

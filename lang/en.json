@@ -4,6 +4,7 @@
       "Round": "Round",
       "PlayerPhase": "Player Phase",
       "EnemyPhase": "Enemy Phase",
+      "NeutralPhase": "Neutral Phase",
       "DragHint": "Drag to move",
       "Hide": "Hide turn order",
       "Show": "Show turn order",
@@ -12,10 +13,10 @@
     },
     "AI": {
       "SettingName": "Enemy AI",
-      "SettingHint": "Hostile units act automatically on their turn: advance, attack, overwatch, and flee when badly wounded. Runs on the GM client.",
+      "SettingHint": "Default for units whose 'AI Controlled' checkbox was never touched: hostile units act automatically on their turns (advance, attack, overwatch, flee when badly wounded). Units with the checkbox set always follow it. Runs on the GM client.",
       "FleeMsg": "retreats!",
-      "SheetNoAI": "Disable AI",
-      "SheetNoAIHint": "This unit's turns are played manually even with Enemy AI enabled."
+      "SheetAiControlled": "AI Controlled",
+      "SheetAiHint": "The AI plays this unit's turns automatically. Neutrals just hold their ground."
     },
     "UiToggle": {
       "SettingName": "Hide Core UI (Battle Mode)",
@@ -54,6 +55,7 @@
       "TargetingHint": "Click an enemy to target and attack it. ESC to cancel.",
       "OverwatchModeHint": "Click to set the overwatch cone — enemies entering it are shot. ESC to cancel.",
       "NoTarget": "No target — aim at an enemy first (T key or double-click).",
+      "AIActing": "AI is acting — spectating…",
       "HP": "HP",
       "AP": "AP",
       "Target": "Target"
@@ -69,7 +71,9 @@
       "NoLOS": "No line of sight to target.",
       "AlreadyOverwatch": "Unit is already on overwatch.",
       "HexUnsupported": "Hex grids are not supported yet — use a square grid scene.",
-      "NoCombatTurn": "No active combat turn."
+      "NoCombatTurn": "No active combat turn.",
+      "PropInert": "The shot thunks into the barrel — nothing happens.",
+      "PropMissed": "The shot misses the prop."
     },
     "Card": {
       "Attack": "Attack",
@@ -93,12 +97,23 @@
     "Props": {
       "Title": "Cover Props",
       "Open": "Cover props — drag onto the map",
-      "Hint": "Drag a prop onto the map to place it. Units standing against it are harder to hit from the far side (Half −20%, Three-Quarter −30%, Full −40%). Props block movement but never sight, and they cannot be shot.",
+      "Hint": "Drag a prop onto the map to place it. Units standing against it are harder to hit from the far side (Half −20%, Three-Quarter −30%, Full −40%). Props block movement but never sight. Props can be shot from attack targeting — hitting a Fuel Barrel detonates it: everyone nearby takes blast damage and other barrels chain-explode.",
       "Placed": "{name} placed.",
       "crate": "Wooden Crate",
       "sandbags": "Sandbag Stack",
       "barrel": "Fuel Barrel",
-      "container": "Shipping Container"
+      "waterbarrel": "Water Barrel",
+      "container": "Shipping Container",
+      "ExplosiveWarn": "⚠ EXPLOSIVE — shooting it detonates it"
+    },
+    "PropShot": {
+      "Hit": "{attacker} shoots the {prop} and hits.",
+      "Miss": "{attacker} shoots at the {prop} and misses."
+    },
+    "Explosion": {
+      "Title": "Explosion",
+      "Damage": "Blast damage: <strong>{damage}</strong> ({formula}) to everyone in the blast radius.",
+      "NoVictims": "The blast catches no one."
     },
     "Sheet": {
       "Unit": "Unit Sheet",
@@ -112,6 +127,7 @@
       "PlayerSide": "Player Side",
       "EnemySide": "Enemy Side",
       "FactionHint": "Faction follows the token's disposition: Hostile = enemy side, otherwise player side.",
+      "SideHint": "Where this unit stands in the fight. Neutrals are ignored by the AI, by overwatch, and by victory checks.",
       "Equip": "Equip",
       "Equipped": "Equipped",
       "Description": "Description",
@@ -133,6 +149,11 @@
     "Weapon": {
       "Unarmed": "Unarmed",
       "NewWeapon": "New Weapon"
+    },
+    "Side": {
+      "Friendly": "Friendly",
+      "Neutral": "Neutral",
+      "Enemy": "Enemy"
     }
   }
 }

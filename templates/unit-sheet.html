@@ -3,9 +3,16 @@
     <img class="com-portrait" src="{{document.img}}" alt="{{document.name}}" data-action="pickImage" title="Click to change image">
     <div class="com-header-fields">
       <input type="text" name="name" value="{{document.name}}" placeholder="Name">
-      <div class="com-faction {{factionClass}}" title="{{localize "COM.Sheet.FactionHint"}}">
-        {{#if faction}}{{faction}}{{else}}{{localize "COM.Sheet.FactionHint"}}{{/if}}
-      </div>
+      {{#if isGM}}
+      <select name="prototypeToken.disposition" class="com-side-select com-faction {{factionClass}}"
+              data-dtype="Number" title="{{localize "COM.Sheet.SideHint"}}">
+        {{#each sideOptions}}
+        <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+      {{else}}
+      <div class="com-faction {{factionClass}}">{{sideLabel}}</div>
+      {{/if}}
     </div>
   </header>
 
@@ -45,10 +52,10 @@
   </div>
 
   {{#if isGM}}
-  <label class="com-ai-toggle" title="{{localize "COM.AI.SheetNoAIHint"}}">
-    <input type="checkbox" name="flags.com.noAI" {{#if noAI}}checked{{/if}}>
+  <label class="com-ai-toggle" title="{{localize "COM.AI.SheetAiHint"}}">
+    <input type="checkbox" name="flags.com.aiControlled" {{#if aiControlled}}checked{{/if}}>
     <span class="com-ai-switch"></span>
-    <span class="com-ai-text">{{localize "COM.AI.SheetNoAI"}}</span>
+    <span class="com-ai-text">{{localize "COM.AI.SheetAiControlled"}}</span>
   </label>
   {{/if}}
 

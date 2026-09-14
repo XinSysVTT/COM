@@ -10,7 +10,7 @@
  */
 import { SQ } from "./config.mjs";
 
-export const SIDE = { PLAYER: "player", ENEMY: "enemy" };
+export const SIDE = { PLAYER: "player", NEUTRAL: "neutral", ENEMY: "enemy" };
 
 /* -------------------------------------------- */
 /* Sides & combat state                         */
@@ -18,11 +18,43 @@ export const SIDE = { PLAYER: "player", ENEMY: "enemy" };
 
 /**
  * A combatant's side is derived from its token disposition:
- * HOSTILE tokens form the enemy side, everything else the player side.
+ * HOSTILE tokens are the enemy side, NEUTRAL tokens are bystanders that
+ * neither side targets and that count toward no victory, everything else
+ * is the player side.
  */
 export function sideOf(tokenLike) {
   const doc = tokenLike?.document ?? tokenLike;
-  return doc?.disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE ? SIDE.ENEMY : SIDE.PLAYER;
+  const d = doc?.disposition;
+  if (d === CONST.TOKEN_DISPOSITIONS.HOSTILE) return SIDE.ENEMY;
+  if (d === CONST.TOKEN_DISPOSITIONS.NEUTRAL) return SIDE.NEUTRAL;
+  return SIDE.PLAYER;
+}
+
+/** The side a unit fights against: hostiles fight players, everyone else
+ * fights hostiles. Neutrals have no opponents. */
+export function enemySideOf(tokenLike) {
+  return sideOf(tokenLike) === SIDE.ENEMY ? SIDE.PLAYER : SIDE.ENEMY;
+}
+
+/**
+ * Is this unit played by the AI? The unit sheet's "AI Controlled" checkbox
+ * (`com.aiControlled`) is the authority; the flag may live on the token's
+ * own actor for unlinked tokens or on the base actor. Units whose checkbox
+ * was never touched fall back to the old rule: hostiles follow the global
+ * "Enemy AI" setting, honoring the legacy `com.noAI` opt-out.
+ */
+export function isAIControlled(tokenLike) {
+  const doc = tokenLike?.document ?? tokenLike;
+  const actor = doc?.actor ?? (doc?.documentName === "Actor" ? doc : null)
+    ?? (doc?.actorId ? game.actors.get(doc.actorId) : null);
+  if (!actor) return false;
+  const explicit = actor.getFlag(SQ.id, "aiControlled")
+    ?? game.actors.get(actor.id)?.getFlag(SQ.id, "aiControlled");
+  if (explicit != null) return !!explicit;
+  if (sideOf(tokenLike) === SIDE.ENEMY) {
+    return game.settings.get(SQ.id, "aiEnabled") && !actor.getFlag(SQ.id, "noAI");
+  }
+  return false;
 }
 
 export function activeCombat() {

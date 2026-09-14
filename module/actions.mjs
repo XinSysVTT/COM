@@ -135,10 +135,13 @@ export async function checkOverwatchTriggers(mover, pathCells = null) {
   });
 
   const moverSide = H.sideOf(mover);
+  // Neutrals stay out of the fight: nobody shoots them and they don't shoot.
+  if (moverSide === H.SIDE.NEUTRAL) return;
   const watchers = canvas.tokens.placeables.filter(
     (t) => t.id !== mover.id
       && t.actor?.system.overwatch
       && t.actor.system.hp.value > 0
+      && H.sideOf(t) !== H.SIDE.NEUTRAL
       && H.sideOf(t) !== moverSide
   );
 

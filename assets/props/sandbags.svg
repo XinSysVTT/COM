@@ -1,12 +1,57 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <g stroke="#4a3c20" stroke-width="4">
-    <rect x="6"  y="66" width="30" height="24" rx="11" fill="#a78d58"/>
-    <rect x="35" y="66" width="30" height="24" rx="11" fill="#988051"/>
-    <rect x="64" y="66" width="30" height="24" rx="11" fill="#a78d58"/>
-    <rect x="12" y="44" width="30" height="24" rx="11" fill="#988051"/>
-    <rect x="41" y="44" width="30" height="24" rx="11" fill="#a78d58"/>
-    <rect x="70" y="44" width="24" height="24" rx="11" fill="#8d774a"/>
-    <rect x="20" y="22" width="28" height="24" rx="11" fill="#a78d58"/>
-    <rect x="47" y="22" width="28" height="24" rx="11" fill="#988051"/>
+  <defs>
+    <radialGradient id="shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.38"/>
+      <stop offset="65%" stop-color="#000000" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bagA" x1="0" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#c2a86e"/>
+      <stop offset="55%" stop-color="#a3894f"/>
+      <stop offset="100%" stop-color="#776134"/>
+    </linearGradient>
+    <linearGradient id="bagB" x1="0" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#b49a60"/>
+      <stop offset="55%" stop-color="#967d46"/>
+      <stop offset="100%" stop-color="#6a562c"/>
+    </linearGradient>
+    <linearGradient id="bagC" x1="0" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#a58c55"/>
+      <stop offset="55%" stop-color="#877040"/>
+      <stop offset="100%" stop-color="#5d4b26"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="51" cy="55" rx="48" ry="44" fill="url(#shadow)"/>
+
+  <!-- dark base between layers -->
+  <path d="M8 28q42-16 84 0l-2 60q-40 12-80 0z" fill="#241c0e" opacity="0.85"/>
+
+  <!-- back row (north) -->
+  <g stroke="#241c0e" stroke-width="2.5">
+    <rect x="12" y="18" width="34" height="22" rx="10" fill="url(#bagC)"/>
+    <rect x="44" y="16" width="34" height="22" rx="10" fill="url(#bagA)"/>
+    <rect x="66" y="22" width="26" height="21" rx="10" fill="url(#bagB)"/>
   </g>
+  <!-- middle row -->
+  <g stroke="#241c0e" stroke-width="2.5">
+    <rect x="8"  y="38" width="35" height="23" rx="10.5" fill="url(#bagA)"/>
+    <rect x="41" y="36" width="35" height="23" rx="10.5" fill="url(#bagB)"/>
+    <rect x="72" y="40" width="21" height="22" rx="10" fill="url(#bagC)"/>
+  </g>
+  <!-- front row (south) -->
+  <g stroke="#241c0e" stroke-width="2.5">
+    <rect x="12" y="59" width="34" height="23" rx="10.5" fill="url(#bagB)"/>
+    <rect x="44" y="58" width="34" height="23" rx="10.5" fill="url(#bagA)"/>
+    <rect x="70" y="62" width="22" height="21" rx="10" fill="url(#bagB)"/>
+  </g>
+
+  <!-- seams and stitching -->
+  <path d="M29 20v18M61 18v18M79 24v17M25.5 40v19M58.5 38v19M82 42v18M29 61v19M61 60v19M81 64v17"
+        stroke="#5d4b26" stroke-width="2" opacity="0.7"/>
+  <path d="M18 44q8 3 15 0M52 42q8 3 15 0M20 65q8 3 15 0M52 64q8 3 15 0" stroke="#3d3115" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+  <!-- top-left highlights per bag -->
+  <path d="M16 24q8-5 16-4M48 21q8-4 16-2M74 27q5-3 10-2M14 44q8-4 16-3M47 42q8-4 16-2M76 45q5-2 9-1M18 65q8-4 16-3M50 64q8-4 16-2M76 67q5-2 9-1"
+        stroke="#dcc28a" stroke-opacity="0.32" stroke-width="1.8" fill="none" stroke-linecap="round"/>
 </svg>

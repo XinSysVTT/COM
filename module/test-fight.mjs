@@ -13,10 +13,10 @@ const ARENA_NAME = "Test Fight Arena";
 const CELLS = { cols: 24, rows: 16, cell: 100 };
 
 const UNITS = [
-  { name: "Trooper 1", hostile: false, col: 3, row: 3 },
-  { name: "Trooper 2", hostile: false, col: 3, row: 8 },
-  { name: "Raider 1", hostile: true, col: CELLS.cols - 4, row: 3 },
-  { name: "Raider 2", hostile: true, col: CELLS.cols - 4, row: 8 }
+  { name: "Trooper 1", hostile: false, col: 3, row: 3, art: "unit_trooper_01.svg" },
+  { name: "Trooper 2", hostile: false, col: 3, row: 8, art: "unit_trooper_02.svg" },
+  { name: "Raider 1", hostile: true, col: CELLS.cols - 4, row: 3, art: "unit_raider_01.svg" },
+  { name: "Raider 2", hostile: true, col: CELLS.cols - 4, row: 8, art: "unit_raider_02.svg" }
 ];
 
 class TestFightMenu extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -114,14 +114,16 @@ async function ensureArenaScene() {
 }
 
 async function ensureActor(unit) {
+  const art = `systems/${SQ.id}/assets/tokens/${unit.art}`;
   let actor = game.actors.find((a) => a.name === unit.name);
   if (!actor) {
     actor = await Actor.create({
       name: unit.name,
       type: "unit",
-      img: "icons/svg/mystery-man.svg",
+      img: art,
       prototypeToken: {
         name: unit.name,
+        texture: { src: art },
         disposition: unit.hostile ? CONST.TOKEN_DISPOSITIONS.HOSTILE : CONST.TOKEN_DISPOSITIONS.FRIENDLY,
         width: 1,
         height: 1
@@ -134,6 +136,11 @@ async function ensureActor(unit) {
         speed: 4
       }
     });
+  }
+  // Actors created before the art existed keep their placeholder — sync the
+  // portrait and prototype so old worlds pick up the new look.
+  if (actor.img !== art || actor.prototypeToken?.texture?.src !== art) {
+    await actor.update({ img: art, "prototypeToken.texture.src": art });
   }
   if (!actor.items.some((i) => i.type === "weapon")) {
     await Item.create({

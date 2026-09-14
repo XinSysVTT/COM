@@ -107,12 +107,14 @@ export function registerTokenActions() {
 /* Rendering                                    */
 /* -------------------------------------------- */
 
-/** The token the ring belongs to, if any. */
+/** The token the ring belongs to, if any. AI-controlled units are spectated,
+ * never commanded: their turns render no ring. */
 function radialToken() {
   if (!H.activeCombat()) return null;
   const token = H.activeToken();
   if (!token?.actor) return null;
   if (!(game.user.isGM || token.isOwner)) return null;
+  if (H.isAIControlled(token)) return null;
   return token;
 }
 
@@ -329,12 +331,14 @@ function followLoop() {
 
 /**
  * Run one of the ring actions. Targets the user's controlled token, or
- * the active combatant's token when nothing else is controlled.
+ * the active combatant's token when nothing else is controlled. Hotkeys
+ * never command an AI-controlled unit — those turns are spectated.
  */
 export function performAction(id) {
   const active = H.activeToken();
   const token = canvas.tokens.controlled[0] ?? active;
   if (!token) return;
+  if (H.isAIControlled(token) && token === active) return;
 
   switch (id) {
     case "move":

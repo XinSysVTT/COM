@@ -23,6 +23,8 @@
     <button type="button" data-action="overwatch" {{#unless canOverwatch}}disabled{{/unless}}>{{{comIcon "overwatch"}}}<span>{{localize "COM.Hud.OverwatchName"}}</span><b>3</b></button>
     <button type="button" data-action="endTurn" class="com-hud-end" {{#unless inCombat}}disabled{{/unless}}>{{{comIcon "endTurn"}}}<span>{{localize "COM.Hud.EndTurnName"}}</span><b>F</b></button>
   </div>
+  {{else if aiActing}}
+  <div class="com-hud-actions com-hud-ai-acting"><i class="fas fa-robot"></i><span>{{localize "COM.Hud.AIActing"}}</span></div>
   {{/if}}
   {{#if moveMode}}<div class="com-hud-mode">{{localize "COM.Hud.MoveModeHint"}}</div>{{/if}}
   {{#if targeting}}<div class="com-hud-mode">{{localize "COM.Hud.TargetingHint"}}</div>{{/if}}

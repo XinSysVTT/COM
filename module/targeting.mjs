@@ -8,6 +8,7 @@ import * as H from "./helpers.mjs";
 import { attackAction } from "./actions.mjs";
 import { coverLevelAgainst, coverBonus, coverLabel } from "./cover.mjs";
 import { cancelOverwatchFacing } from "./overwatch.mjs";
+import { isPropToken, isExplosiveProp, shootProp } from "./props.mjs";
 
 const state = { active: false, token: null };
 let _forecastEl = null;
@@ -71,9 +72,10 @@ export async function requestTargetedAttack(worldX, worldY) {
     return;
   }
   if (target.id === attacker.id) return;
-  // Clicking an ally or a neutral is a selection, not a shot: let Foundry's
-  // own handling stand and just leave the mode.
-  if (H.sideOf(target) !== H.SIDE.ENEMY) return;
+  // Cover props are shootable objects (explosive barrels detonate); allies
+  // and other neutrals are a selection, not a shot: let Foundry's own
+  // handling stand and just leave the mode.
+  if (!isPropToken(target) && H.sideOf(target) !== H.SIDE.ENEMY) return;
 
   // Undo the selection the click just made, put the reticle on the victim
   // (visible to all clients) and keep the attacker under control.
@@ -81,7 +83,8 @@ export async function requestTargetedAttack(worldX, worldY) {
   target.setTarget(true, { releaseOthers: true });
   attacker.control({ releaseOthers: true });
 
-  await attackAction(attacker, target);
+  if (isPropToken(target)) await shootProp(attacker, target);
+  else await attackAction(attacker, target);
   // Keep the next press of Attack deterministic: no stale reticle to
   // auto-fire at when the player only means to arm click-targeting again.
   H.clearTargets();
@@ -151,8 +154,11 @@ function escapeHtml(text) {
 function showForecast(target) {
   if (!_forecastEl) return;
   const attacker = canvas.tokens.controlled[0] ?? null;
-  if (!attacker?.actor || !target?.actor || target.id === attacker.id
-    || attacker.actor.system.hp.value <= 0 || target.actor.system.hp.value <= 0) {
+  const explosive = target ? isExplosiveProp(target) : false;
+  const prop = target ? isPropToken(target) : false;
+  if (!attacker?.actor || (!target?.actor && !prop) || target.id === attacker.id
+    || (target.actor?.system.hp.value ?? 1) <= 0
+    || attacker.actor.system.hp.value <= 0) {
     return hideForecast();
   }
   const weapon = H.getEquippedWeapon(attacker.actor);
@@ -162,6 +168,16 @@ function showForecast(target) {
     line = `<span class="com-forecast-bad">${game.i18n.localize("COM.Notif.OutOfRange")}</span>`;
   } else if (!H.hasLOS(H.tokenCenter(attacker), H.tokenCenter(target))) {
     line = `<span class="com-forecast-bad">${game.i18n.localize("COM.Notif.NoLOS")}</span>`;
+  } else if (prop) {
+    // Props are stationary: aim + fixed bonus, no defense or cover.
+    const chance = Math.clamp(
+      attacker.actor.system.aim + SQ.PROP_HIT_BONUS,
+      SQ.MIN_HIT,
+      SQ.MAX_HIT
+    );
+    const cls = chance >= 60 ? "com-forecast-good" : chance >= 30 ? "com-forecast-mid" : "com-forecast-bad";
+    line = `<span class="${cls}">${game.i18n.localize("COM.Card.HitChance")}: ${chance}%</span>`
+      + (explosive ? ` · <span class="com-forecast-bad">${game.i18n.localize("COM.Props.ExplosiveWarn")}</span>` : "");
   } else {
     const coverLevel = coverLevelAgainst(attacker, target);
     const coverPenalty = Number(weapon.system.range) <= 1 ? 0 : coverBonus(coverLevel);

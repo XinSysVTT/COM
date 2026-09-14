@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.38"/>
+      <stop offset="65%" stop-color="#000000" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="helm" cx="36%" cy="30%" r="85%">
+      <stop offset="0%" stop-color="#8a8267"/>
+      <stop offset="48%" stop-color="#5c5442"/>
+      <stop offset="100%" stop-color="#2e2a20"/>
+    </radialGradient>
+    <radialGradient id="pad" cx="35%" cy="30%" r="85%">
+      <stop offset="0%" stop-color="#75694e"/>
+      <stop offset="55%" stop-color="#463d2c"/>
+      <stop offset="100%" stop-color="#241f16"/>
+    </radialGradient>
+    <linearGradient id="armor" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#665c44"/>
+      <stop offset="55%" stop-color="#433a2a"/>
+      <stop offset="100%" stop-color="#262017"/>
+    </linearGradient>
+    <linearGradient id="blade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d8dde2"/>
+      <stop offset="50%" stop-color="#9aa3ac"/>
+      <stop offset="100%" stop-color="#565e66"/>
+    </linearGradient>
+    <radialGradient id="lens" cx="40%" cy="35%" r="80%">
+      <stop offset="0%" stop-color="#e0985a"/>
+      <stop offset="55%" stop-color="#ff9a3d"/>
+      <stop offset="100%" stop-color="#a34e12"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="103" cy="116" rx="68" ry="52" fill="url(#shadow)"/>
+
+  <!-- ragged cloak -->
+  <path d="M64 118l10 26 12-12 12 18 12-16 12 14 10-22 -6 30-22 10-24-8z" fill="#33291b" stroke="#120d08" stroke-opacity="0.55" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <ellipse cx="100" cy="106" rx="52" ry="38" fill="url(#armor)" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2.5"/>
+  <path d="M70 92h60M74 116h52" stroke="#181209" stroke-opacity="0.5" stroke-width="2"/>
+  <path d="M64 98l26 42M136 98l-26 42" stroke="#1a1509" stroke-width="7" stroke-linecap="round" opacity="0.85"/>
+  <!-- red war paint marks -->
+  <path d="M78 128l10-4M112 128l10 4" stroke="#a03428" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
+
+  <circle cx="52" cy="102" r="23" fill="url(#pad)" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2.5"/>
+  <circle cx="148" cy="102" r="23" fill="url(#pad)" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2.5"/>
+  <path d="M40 90a22 22 0 0 1 15-9" stroke="#b3a67f" stroke-opacity="0.45" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M134 90a22 22 0 0 1 15-9" stroke="#b3a67f" stroke-opacity="0.45" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M148 80l6-10 5 10M136 84l3-9 7 4" fill="#33301f" stroke="#0b0e13" stroke-opacity="0.5" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M40 112h22M138 112h22" stroke="#8a4a26" stroke-width="4" opacity="0.9"/>
+
+  <!-- right arm raised with cleaver, left arm forward -->
+  <rect x="126" y="52" width="16" height="46" rx="8" fill="url(#armor)" stroke="#0b0e13" stroke-opacity="0.5" stroke-width="2" transform="rotate(-30 134 75)"/>
+  <rect x="52" y="62" width="16" height="42" rx="8" fill="url(#armor)" stroke="#0b0e13" stroke-opacity="0.5" stroke-width="2" transform="rotate(14 60 83)"/>
+
+  <!-- cleaver blade -->
+  <g transform="translate(148 54) rotate(34)">
+    <rect x="-7" y="-4" width="30" height="9" rx="2" fill="#241c12" stroke="#0b0e13" stroke-opacity="0.5" stroke-width="2"/>
+    <path d="M20 -6q26 4 30 22t-10 26q-8-2-12-10l-12-28z" fill="url(#blade)" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M24 0q18 6 20 18" stroke="#eef2f6" stroke-opacity="0.6" stroke-width="2" fill="none"/>
+  </g>
+  <!-- pistol holstered at hip (visible top-down grip) -->
+  <rect x="64" y="120" width="10" height="16" rx="2.5" fill="#20252b" stroke="#0b0e13" stroke-opacity="0.5" stroke-width="2" transform="rotate(14 69 128)"/>
+
+  <circle cx="74" cy="62" r="7.5" fill="#171310" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2"/>
+  <circle cx="140" cy="52" r="7.5" fill="#171310" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2"/>
+
+  <circle cx="100" cy="80" r="27" fill="url(#helm)" stroke="#0b0e13" stroke-opacity="0.6" stroke-width="2.5"/>
+  <path d="M74 96a27 27 0 0 0 52 0" stroke="#0b0e13" stroke-opacity="0.3" stroke-width="6" fill="none"/>
+  <path d="M74 74a27 27 0 0 1 52 0" stroke="#241f16" stroke-width="7" fill="none"/>
+  <circle cx="88" cy="70" r="9" fill="#1a1509" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2"/>
+  <circle cx="112" cy="70" r="9" fill="#1a1509" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2"/>
+  <circle cx="88" cy="70" r="5.5" fill="url(#lens)"/>
+  <circle cx="112" cy="70" r="5.5" fill="url(#lens)"/>
+  
+  
+  <!-- mohawk strip -->
+  <path d="M100 54v-9M94 55l-2-8M106 55l2-8" stroke="#3d3118" stroke-width="4" stroke-linecap="round"/>
+</svg>

@@ -9,9 +9,10 @@
  *              tile that closes the most distance (green range preferred).
  *  4. HOLD   — nothing spotted: go on overwatch, then end the turn.
  *
- * Disable per unit with the `com.noAI` actor flag, globally with the
- * "com.aiEnabled" world setting, or run a turn manually via
- * `game.com.ai.takeTurn(token)`.
+ * Disable per unit by unchecking "AI Controlled" on the sheet (the
+ * `com.aiControlled` actor flag; legacy worlds with `com.noAI` are
+ * honored), globally with the "com.aiEnabled" world setting, or run a
+ * turn manually via `game.com.ai.takeTurn(token)`.
  */
 import { SQ } from "./config.mjs";
 import * as H from "./helpers.mjs";
@@ -50,12 +51,22 @@ export function registerAI() {
   Hooks.on("updateCombat", (combat, change) => {
     if (!("turn" in change || "round" in change)) return;
     if (!game.user.isGM) return;
-    if (!game.settings.get(SQ.id, "aiEnabled")) return;
 
     const token = combat.combatant?.token?.object;
-    if (!token || H.sideOf(token) !== H.SIDE.ENEMY) return;
-    if (token.actor?.getFlag(SQ.id, "noAI")) return;
-    if (!token.actor || token.actor.system.hp.value <= 0) return;
+    if (!token?.actor) return;
+    if (H.sideOf(token) === H.SIDE.NEUTRAL) {
+      // Neutrals don't fight — if the AI owns the token, pass the turn along
+      // so the encounter keeps flowing; otherwise leave it for manual play.
+      if (aiControls(token)) {
+        setTimeout(() => {
+          if (H.activeToken()?.id !== token.id) return;
+          Promise.resolve(game.com?.endTurn?.()).catch((err) => console.error("COM AI error:", err));
+        }, AI.TURN_START_DELAY_MS);
+      }
+      return;
+    }
+    if (!aiControls(token)) return;
+    if (token.actor.system.hp.value <= 0) return;
 
     setTimeout(() => {
       // Re-validate: the turn may have moved on during the delay.
@@ -63,6 +74,11 @@ export function registerAI() {
       takeTurn(token).catch((err) => console.error("COM AI error:", err));
     }, AI.TURN_START_DELAY_MS);
   });
+}
+
+/** Delegates to the shared per-unit AI flag check. */
+function aiControls(token) {
+  return H.isAIControlled(token);
 }
 
 /* -------------------------------------------- */
@@ -93,12 +109,13 @@ export async function takeTurn(token) {
 /* Decision making                              */
 /* -------------------------------------------- */
 
-/** Living, spotted (visible + not hidden) player-side tokens. */
+/** Living, spotted (visible + not hidden) tokens on the unit's enemy side. */
 function spottedEnemies(token) {
+  const enemySide = H.enemySideOf(token);
   return canvas.tokens.placeables.filter((t) => {
     if (t.id === token.id) return false;
     if (t.document.hidden) return false;
-    if (H.sideOf(t) !== H.SIDE.PLAYER) return false;
+    if (H.sideOf(t) !== enemySide) return false;
     if (!t.actor || t.actor.system.hp.value <= 0) return false;
     return H.hasLOS(H.tokenCenter(token), H.tokenCenter(t));
   });
@@ -162,13 +179,15 @@ function decide(token) {
 
 /**
  * Cone facing for an AI overwatch: point at the nearest visible living
- * player-side token, or null for full 360° coverage when none is visible.
+ * token on the unit's enemy side, or null for full 360° coverage when none
+ * is visible.
  */
 function overwatchDir(token) {
+  const enemySide = H.enemySideOf(token);
   const enemies = canvas.tokens.placeables.filter((t) =>
     t.id !== token.id
       && !t.document.hidden
-      && H.sideOf(t) === H.SIDE.PLAYER
+      && H.sideOf(t) === enemySide
       && t.actor?.system.hp.value > 0
   );
   if (!enemies.length) return null;

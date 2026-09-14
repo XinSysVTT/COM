@@ -151,3 +151,77 @@ async function slash(target) {
   });
   g.destroy();
 }
+
+/* -------------------------------------------- */
+/* Explosions                                   */
+/* -------------------------------------------- */
+
+/**
+ * Barrel detonation: white-hot flash, expanding fireball, a shockwave ring
+ * and flying sparks. `radius` is the blast radius in grid cells. Resolves
+ * once the main fireball has played out (sparks keep flying on their own).
+ */
+export async function explosion({ x, y, radius = 2 }) {
+  try {
+    const l = layer();
+    if (!l) return;
+    const R = canvas.grid.size * (radius + 0.6);
+
+    // White-hot flash at the core.
+    const flash = new PIXI.Graphics();
+    flash.beginFill(0xfff6dd, 0.95).drawCircle(0, 0, canvas.grid.size * 0.4).endFill();
+    flash.beginFill(0xffe9a0, 0.6).drawCircle(0, 0, canvas.grid.size * 0.62).endFill();
+    flash.position.set(x, y);
+    l.addChild(flash);
+    tween(260, (t) => {
+      flash.scale.set(1 + t * 1.6);
+      flash.alpha = 1 - t;
+    }).then(() => flash.destroy());
+
+    // Fireball: layered orange discs eating outward.
+    const fire = new PIXI.Container();
+    const core = new PIXI.Graphics();
+    core.beginFill(0xffdd77, 0.9).drawCircle(0, 0, canvas.grid.size * 0.5).endFill();
+    core.beginFill(0xff9030, 0.75).drawCircle(0, 0, canvas.grid.size * 0.8).endFill();
+    core.beginFill(0xc23c10, 0.5).drawCircle(0, 0, canvas.grid.size * 1.05).endFill();
+    fire.addChild(core);
+    fire.position.set(x, y);
+    l.addChild(fire);
+    await tween(480, (t) => {
+      const e = 1 - Math.pow(1 - t, 2); // ease-out
+      fire.scale.set(0.25 + e * (R / (canvas.grid.size * 1.05) - 0.25));
+      fire.alpha = 1 - t * t;
+    });
+    fire.destroy();
+
+    // Shockwave ring racing past the fireball edge.
+    const ring = new PIXI.Graphics();
+    ring.lineStyle({ width: 4, color: 0xffd9a0, alpha: 0.8, cap: PIXI.LINE_CAP.ROUND }).drawCircle(0, 0, R * 0.35);
+    ring.position.set(x, y);
+    l.addChild(ring);
+    tween(520, (t) => {
+      ring.scale.set(0.3 + t * (R / (R * 0.35) - 0.3));
+      ring.alpha = 0.8 * (1 - t);
+    }).then(() => ring.destroy());
+
+    // Sparks: burning chunks flung outward.
+    const sparks = [];
+    for (let i = 0; i < 12; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const dist = R * (0.5 + Math.random() * 0.8);
+      const s = new PIXI.Graphics();
+      s.beginFill(i % 3 === 0 ? 0xfff2c0 : 0xff8a2a, 0.95).drawCircle(0, 0, 2 + Math.random() * 2.5).endFill();
+      s.position.set(x, y);
+      l.addChild(s);
+      sparks.push({ s, ang, dist, spin: (Math.random() - 0.5) * 6 });
+      tween(500 + Math.random() * 350, (t) => {
+        s.x = x + Math.cos(ang) * dist * t;
+        s.y = y + Math.sin(ang) * dist * t - Math.sin(t * Math.PI) * canvas.grid.size * 0.35;
+        s.alpha = 1 - t;
+        s.rotation = ang + t * s.spin;
+      }).then(() => s.destroy());
+    }
+  } catch (err) {
+    console.warn("COM: explosion effect skipped", err);
+  }
+}

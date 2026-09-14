@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.38"/>
+      <stop offset="65%" stop-color="#000000" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="helm" cx="36%" cy="30%" r="85%">
+      <stop offset="0%" stop-color="#8a8267"/>
+      <stop offset="48%" stop-color="#5c5442"/>
+      <stop offset="100%" stop-color="#2e2a20"/>
+    </radialGradient>
+    <radialGradient id="pad" cx="35%" cy="30%" r="85%">
+      <stop offset="0%" stop-color="#75694e"/>
+      <stop offset="55%" stop-color="#463d2c"/>
+      <stop offset="100%" stop-color="#241f16"/>
+    </radialGradient>
+    <linearGradient id="armor" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#665c44"/>
+      <stop offset="55%" stop-color="#433a2a"/>
+      <stop offset="100%" stop-color="#262017"/>
+    </linearGradient>
+    <linearGradient id="cloak" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="#4c3d2b"/>
+      <stop offset="100%" stop-color="#2b2115"/>
+    </linearGradient>
+    <linearGradient id="gun" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3a4048"/>
+      <stop offset="100%" stop-color="#15181d"/>
+    </linearGradient>
+    <radialGradient id="lens" cx="40%" cy="35%" r="80%">
+      <stop offset="0%" stop-color="#e0985a"/>
+      <stop offset="55%" stop-color="#ff9a3d"/>
+      <stop offset="100%" stop-color="#a34e12"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="103" cy="116" rx="68" ry="52" fill="url(#shadow)"/>
+
+  <!-- ragged cloak, south -->
+  <path d="M64 118l10 26 12-12 12 18 12-16 12 14 10-22 -6 30-22 10-24-8z" fill="url(#cloak)" stroke="#120d08" stroke-opacity="0.55" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M70 128l8 14M126 126l-8 16" stroke="#120d08" stroke-opacity="0.4" stroke-width="2"/>
+
+  <!-- torso / scrap plate -->
+  <ellipse cx="100" cy="106" rx="52" ry="38" fill="url(#armor)" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2.5"/>
+  <path d="M70 92h60M74 116h52" stroke="#181209" stroke-opacity="0.5" stroke-width="2"/>
+  <path d="M84 78l6 56M116 78l-6 56" stroke="#181209" stroke-opacity="0.4" stroke-width="2"/>
+  <!-- patch plate -->
+  <rect x="88" y="98" width="26" height="20" rx="4" fill="#4f4632" stroke="#120d08" stroke-opacity="0.5" stroke-width="2"/>
+  <path d="M92 104l18 10" stroke="#8a4a26" stroke-width="3" opacity="0.9"/>
+  <!-- straps -->
+  <path d="M64 98l26 42M136 98l-26 42" stroke="#1a1509" stroke-width="7" stroke-linecap="round" opacity="0.85"/>
+
+  <!-- pauldrons: mismatched scrap -->
+  <circle cx="52" cy="102" r="23" fill="url(#pad)" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2.5"/>
+  <circle cx="148" cy="102" r="23" fill="url(#pad)" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2.5"/>
+  <path d="M40 90a22 22 0 0 1 15-9" stroke="#b3a67f" stroke-opacity="0.45" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M134 90a22 22 0 0 1 15-9" stroke="#b3a67f" stroke-opacity="0.45" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- spikes on right pauldron -->
+  <path d="M148 80l6-10 5 10M136 84l3-9 7 4" fill="#33301f" stroke="#0b0e13" stroke-opacity="0.5" stroke-width="2" stroke-linejoin="round"/>
+  <!-- hostile accent band -->
+  <path d="M40 112h22M138 112h22" stroke="#8a4a26" stroke-width="4" opacity="0.9"/>
+
+  <!-- arms -->
+  <rect x="52" y="58" width="16" height="46" rx="8" fill="url(#armor)" stroke="#0b0e13" stroke-opacity="0.5" stroke-width="2" transform="rotate(24 60 81)"/>
+  <rect x="128" y="58" width="16" height="46" rx="8" fill="url(#armor)" stroke="#0b0e13" stroke-opacity="0.5" stroke-width="2" transform="rotate(-24 136 81)"/>
+
+  <!-- sawn-off rifle -->
+  <g transform="translate(112 70) rotate(26)">
+    <rect x="-44" y="-4.5" width="15" height="9" rx="2" fill="url(#gun)" stroke="#0b0e13" stroke-opacity="0.5" stroke-width="2"/>
+    <rect x="-32" y="-6.5" width="56" height="13" rx="3" fill="url(#gun)" stroke="#0b0e13" stroke-opacity="0.5" stroke-width="2"/>
+    <rect x="22" y="-2.5" width="24" height="5" rx="2" fill="#20252b"/>
+    <rect x="44" y="-3.5" width="7" height="7" rx="1.5" fill="#111418"/>
+    <rect x="-2" y="6.5" width="9" height="13" rx="2.5" fill="#20252b" transform="rotate(6 0 13)"/>
+    <!-- strapped mag -->
+    <rect x="-16" y="6" width="8" height="11" rx="2" fill="#33301f" stroke="#0b0e13" stroke-opacity="0.5" stroke-width="2"/>
+  </g>
+
+  <circle cx="94" cy="62" r="7.5" fill="#171310" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2"/>
+  <circle cx="126" cy="66" r="7.5" fill="#171310" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2"/>
+
+  <!-- head: pot helmet + goggles -->
+  <circle cx="100" cy="80" r="27" fill="url(#helm)" stroke="#0b0e13" stroke-opacity="0.6" stroke-width="2.5"/>
+  <path d="M74 96a27 27 0 0 0 52 0" stroke="#0b0e13" stroke-opacity="0.3" stroke-width="6" fill="none"/>
+  <!-- goggles strap -->
+  <path d="M74 74a27 27 0 0 1 52 0" stroke="#241f16" stroke-width="7" fill="none"/>
+  <circle cx="88" cy="70" r="9" fill="#1a1509" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2"/>
+  <circle cx="112" cy="70" r="9" fill="#1a1509" stroke="#0b0e13" stroke-opacity="0.55" stroke-width="2"/>
+  <circle cx="88" cy="70" r="5.5" fill="url(#lens)"/>
+  <circle cx="112" cy="70" r="5.5" fill="url(#lens)"/>
+  
+  
+  <!-- rag wrap on helmet -->
+  <path d="M78 60a26 26 0 0 1 24-8" stroke="#c9b98c" stroke-opacity="0.4" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>

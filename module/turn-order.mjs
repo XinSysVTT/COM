@@ -74,7 +74,7 @@ export class TurnOrderHud extends api.HandlebarsApplicationMixin(api.Application
         tokenId: c.token?.id ?? null,
         name: c.name,
         img: c.token?.texture?.src ?? c.actor?.img ?? CONST.DEFAULT_TOKEN,
-        side: H.sideOf(c.token) === H.SIDE.ENEMY ? "enemy" : "player",
+        side: H.sideOf(c.token),
         isActive: c.id === activeId,
         hasActed: idx < (combat.turn ?? 0),
         defeated: c.isDefeated,
@@ -89,9 +89,11 @@ export class TurnOrderHud extends api.HandlebarsApplicationMixin(api.Application
     return {
       active: true,
       round: combat.round,
-      phase: activeSide === H.SIDE.ENEMY ? "enemy" : "player",
+      phase: activeSide,
       phaseLabel: game.i18n.localize(
-        activeSide === H.SIDE.ENEMY ? "COM.TurnOrder.EnemyPhase" : "COM.TurnOrder.PlayerPhase"
+        activeSide === H.SIDE.ENEMY ? "COM.TurnOrder.EnemyPhase"
+        : activeSide === H.SIDE.NEUTRAL ? "COM.TurnOrder.NeutralPhase"
+        : "COM.TurnOrder.PlayerPhase"
       ),
       scale: game.settings.get(SQ.id, "turnOrderScale") ?? 1,
       hidden: game.settings.get(SQ.id, "turnOrderHidden") ?? false,

@@ -68,6 +68,9 @@ export class TacticsHud extends HandlebarsApplicationMixin(ApplicationV2) {
       // only action surface; the card below keeps action buttons for
       // freeform (out-of-combat) play only.
       showActions: !inCombat,
+      // AI-controlled units are spectated: show an "AI acting" note instead
+      // of anything actionable.
+      aiActing: inCombat && H.isActiveCombatant(token) && H.isAIControlled(token),
       canMove: H.canAct(token, SQ.MOVE_AP).ok,
       canAttack: H.canAct(token, SQ.ATTACK_AP).ok,
       canOverwatch: H.canAct(token, SQ.OVERWATCH_AP).ok && !sys.overwatch,

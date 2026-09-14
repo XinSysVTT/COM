@@ -57,5 +57,15 @@ export const SQ = {
   DOWNED_EFFECT: "Downed",
 
   // Name of the canvas highlight layer used for the movement range.
-  HIGHLIGHT_NAME: "com-move-range"
+  HIGHLIGHT_NAME: "com-move-range",
+
+  // Cover props: bonus to hit a stationary prop with a shot (props don't
+  // dodge — only the shooter's aim decides, plus this bonus).
+  PROP_HIT_BONUS: 20,
+
+  // Explosive barrels: blast radius in grid cells (any footprint cell within
+  // this range of the barrel is caught) and the damage roll dealt to every
+  // victim in the blast.
+  BARREL_BLAST_RADIUS: 2,
+  BARREL_BLAST_DAMAGE: "3d6"
 };

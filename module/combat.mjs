@@ -6,13 +6,16 @@
 import * as H from "./helpers.mjs";
 
 export function registerCombat() {
-  // Assign side-based initiative as combatants join: players 1, enemies 0.
+  // Assign side-based initiative as combatants join: players 1, enemies 0,
+  // neutrals 2 (they act after both real sides).
   // With Foundry's descending sort this groups all players before all enemies.
   Hooks.on("createCombatant", async (combatant) => {
     if (!game.user.isGM) return;
     if (combatant.initiative != null) return;
     const side = H.sideOf(combatant.token);
-    await combatant.update({ initiative: side === H.SIDE.ENEMY ? 0 : 1 });
+    await combatant.update({
+      initiative: side === H.SIDE.ENEMY ? 0 : side === H.SIDE.NEUTRAL ? 2 : 1
+    });
   });
 
   // Fresh state when a fight begins.
@@ -54,10 +57,11 @@ async function onTurnStart(combat) {
 
   // A fight is over when one side has no living units: end the combat
   // instead of cycling turns through defeated combatants forever.
+  // Neutrals count toward neither side, so spectators never decide victory.
   const alive = combat.combatants.filter(
     (c) => (c.actor?.system?.hp?.value ?? 0) > 0
   );
-  const players = alive.filter((c) => H.sideOf(c.token) !== H.SIDE.ENEMY);
+  const players = alive.filter((c) => H.sideOf(c.token) === H.SIDE.PLAYER);
   const enemies = alive.filter((c) => H.sideOf(c.token) === H.SIDE.ENEMY);
   if (!players.length || !enemies.length) {
     await endCombatWithResult(combat, players.length > 0, enemies.length > 0);

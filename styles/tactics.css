@@ -179,6 +179,17 @@
   padding: 5px;
 }
 
+#com-hud .com-hud-ai-acting {
+  align-items: center;
+  gap: 8px;
+  color: var(--com-accent, #7fd94c);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  opacity: 0.9;
+}
+
 #com-hud .com-hud-actions button {
   display: flex;
   align-items: center;
@@ -579,6 +590,11 @@ body.com-overwatch-facing #board {
   border-color: var(--com-danger);
 }
 
+#com-turn-order .com-to-tile.com-side-neutral {
+  border-color: #6f6f6f;
+  opacity: 0.85;
+}
+
 #com-turn-order .com-to-tile.com-active {
   border-color: var(--com-accent);
   box-shadow: 0 0 0.5em rgba(127, 217, 76, 0.55);
@@ -908,6 +924,30 @@ body.com-ui-hidden #com-hud {
 .com-faction.com-enemy::before {
   background: #ff8f8f;
   box-shadow: 0 0 5px rgba(255, 143, 143, 0.7);
+}
+
+/* Side selector (unit sheet) */
+.com-side-select {
+  width: fit-content;
+  background: rgba(0, 0, 0, 0.3);
+  color: #cfd6c6;
+  border: 1px solid #3c4238;
+  border-radius: 5px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+
+.com-side-select option {
+  background: #1c211a;
+  color: #cfd6c6;
+}
+
+.com-faction.com-neutral::before {
+  background: #c8c8c8;
+  box-shadow: 0 0 5px rgba(200, 200, 200, 0.6);
 }
 
 /* --- Stats --- */
