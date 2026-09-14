@@ -79,7 +79,7 @@ The **status card** (bottom center) shows the selected unit out of combat and ho
 **In Foundry:** Administration → Install System → Manifest URL:
 
 ```
-https://raw.githubusercontent.com/XinSysVTT/foundryvtt-com/main/system.json
+https://raw.githubusercontent.com/XinSysVTT/COM/main/system.json
 ```
 
 Requires Foundry Virtual Tabletop v13 or newer (verified on v14).
